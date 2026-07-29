@@ -47,6 +47,10 @@ Violating any of these blocks the change. If a task requires breaking one, stop 
                             data source port interfaces, use cases, Result wrappers.
                             Depends on: nothing.
 
+:core:design                Compose design system. Color.kt, Type.kt, IdealistaTheme.
+                            No business logic, no Hilt, no DI. Shared by all Compose screens.
+                            Depends on: nothing in the project (only AndroidX Compose).
+
 :core:data                  Repository implementations, DispatcherProvider, DataModule (@Binds).
                             The data-layer aggregator — the only module that can see both
                             :core:network and :core:database simultaneously.
@@ -61,10 +65,12 @@ Violating any of these blocks the change. If a task requires breaking one, stop 
                             Depends on: :core:domain.
 
 :feature:list               Listing screen (XML + Fragment + ListAdapter + LiveData ViewModel).
-                            Depends on: :core:domain. NEVER on :core:network or :core:database.
+                            Depends on: :core:domain. May depend on :core:design if Compose
+                            components are added. NEVER on :core:network or :core:database.
 
 :feature:detail             Detail screen (Fragment host + Compose content + StateFlow ViewModel).
-                            Depends on: :core:domain. NEVER on :core:network or :core:database.
+                            Depends on: :core:domain, :core:design.
+                            NEVER on :core:network or :core:database.
 ```
 
 ### 3.1 Where do repository implementations live?
@@ -80,6 +86,7 @@ Rationale: `:app` cannot safely act as the data layer because it makes the DI gr
 - Features never import each other.
 - Features never depend on `:core:network` or `:core:database`.
 - `:core:domain` depends on nothing (pure Kotlin module — apply the `java-library` plugin, not `com.android.library`).
+- `:core:design` depends on nothing in the project. It is an Android library (`com.android.library`) because Compose requires the Android runtime, but it imports nothing from `:core:domain` or any other project module.
 - `:core:data` is the only module that may depend on both `:core:network` and `:core:database`.
 - `:app` depends on `:core:data` (not directly on `:core:network` or `:core:database`).
 - Circular dependencies are a build failure. If Gradle doesn't catch it, the reviewer will.
@@ -177,7 +184,19 @@ If any command fails, the task is not done. Fix it before returning control.
 
 ---
 
-## 9. Response protocol for AI collaborators
+## 9. Git discipline
+
+**Never run `git commit`, `git push`, or any destructive git command without the user explicitly asking for it.** The user commits manually, always. After finishing a task:
+
+- Run the verification commands (§7).
+- Report what changed and whether everything passes.
+- Stop. Do not stage, do not commit. Wait for the user.
+
+This applies to all agents and the coordinator.
+
+---
+
+## 11. Response protocol for AI collaborators
 
 When taking on a task:
 
@@ -192,7 +211,7 @@ Silence on trade-offs is a red flag. Surface them.
 
 ---
 
-## 10. Definition of Done (per story)
+## 12. Definition of Done (per story)
 
 A story is done when all apply:
 
@@ -205,7 +224,7 @@ A story is done when all apply:
 
 ---
 
-## 11. Repository layout (top-level)
+## 13. Repository layout (top-level)
 
 ```
 /                           Gradle root, settings.gradle.kts, libs.versions.toml

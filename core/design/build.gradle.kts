@@ -1,12 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.carloshinojosa.idealistachallenge.detail"
+    namespace = "com.carloshinojosa.idealistachallenge.design"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -22,22 +20,13 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
-        viewBinding = true
         compose = true
     }
 }
 
 dependencies {
-    implementation(project(":core:domain"))
-    implementation(project(":core:design"))
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.navigation.fragment.ktx)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.ui)
     debugImplementation(libs.androidx.compose.ui.tooling)
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
 }

@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#90CAF9</color>
-    <color name="colorPrimaryDark">#42A5F5</color>
-    <color name="colorAccent">#FFB300</color>
-    <color name="colorSurface">#1C1B1F</color>
-    <color name="colorOnPrimary">#003C8F</color>
-    <color name="colorOnSurface">#E6E1E5</color>
-    <color name="colorBackground">#121212</color>
+    <!-- Brand / primary — lighter tones for dark backgrounds -->
+    <color name="primary">#33B870</color>
+    <color name="primary_strong">#5BC988</color>
+    <color name="primary_container">#003D20</color>
+    <color name="on_primary_container">#B2ECCC</color>
+
+    <!-- Secondary -->
+    <color name="secondary">#9EB0A8</color>
+    <color name="secondary_container">#233329</color>
+    <color name="on_secondary_container">#C8DDD3</color>
+
+    <!-- Surfaces — dark canvas and cards -->
+    <color name="canvas">#0E1513</color>
+    <color name="surface">#1A221E</color>
+    <color name="surface_variant">#1E2A24</color>
+
+    <!-- Text / icons — light on dark -->
+    <color name="on_surface">#E0E8E3</color>
+    <color name="on_surface_variant">#8A9A93</color>
+
+    <!-- Borders -->
+    <color name="outline">#354A40</color>
+
+    <!-- Favorites -->
+    <color name="favorite">#FF7B7F</color>
+    <color name="fav_bg">#3A1A1A</color>
+
+    <!-- Error -->
+    <color name="error">#FF7B79</color>
+
+    <!-- Energy certificate — identity colors, kept unchanged across themes -->
+    <color name="energy_a">#00A650</color>
+    <color name="energy_b">#50B848</color>
+    <color name="energy_c">#B5CC2E</color>
+    <color name="energy_d">#FFF001</color>
+    <color name="energy_e">#F5B120</color>
+    <color name="energy_f">#E9661A</color>
+    <color name="energy_g">#E2231A</color>
 </resources>

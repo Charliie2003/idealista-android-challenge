@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1565C0</color>
-    <color name="colorPrimaryDark">#003C8F</color>
-    <color name="colorAccent">#FF6F00</color>
-    <color name="colorSurface">#FFFFFF</color>
-    <color name="colorOnPrimary">#FFFFFF</color>
-    <color name="colorOnSurface">#1C1B1F</color>
-    <color name="colorBackground">#F5F5F5</color>
+    <!-- Brand / primary -->
+    <color name="primary">#00A650</color>
+    <color name="primary_strong">#00753A</color>
+    <color name="primary_container">#C7F0D8</color>
+    <color name="on_primary_container">#00311A</color>
+
+    <!-- Secondary -->
+    <color name="secondary">#4A5A54</color>
+    <color name="secondary_container">#E8EFEB</color>
+    <color name="on_secondary_container">#1A2C24</color>
+
+    <!-- Surfaces -->
+    <color name="canvas">#F1F4F3</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#EBEFED</color>
+
+    <!-- Text / icons -->
+    <color name="on_surface">#14201A</color>
+    <color name="on_surface_variant">#5C6360</color>
+
+    <!-- Borders -->
+    <color name="outline">#E1E6E3</color>
+
+    <!-- Favorites -->
+    <color name="favorite">#E5484D</color>
+    <color name="fav_bg">#FDECEC</color>
+
+    <!-- Error -->
+    <color name="error">#D92D20</color>
+
+    <!-- Energy certificate (EU standard scale A–G) -->
+    <color name="energy_a">#00A650</color>
+    <color name="energy_b">#50B848</color>
+    <color name="energy_c">#B5CC2E</color>
+    <color name="energy_d">#FFF001</color>
+    <color name="energy_e">#F5B120</color>
+    <color name="energy_f">#E9661A</color>
+    <color name="energy_g">#E2231A</color>
 </resources>

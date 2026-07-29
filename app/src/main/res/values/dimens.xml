@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing — base 4 dp grid -->
+    <dimen name="space_4">4dp</dimen>
+    <dimen name="space_8">8dp</dimen>
+    <dimen name="space_12">12dp</dimen>
+    <dimen name="space_16">16dp</dimen>
+    <dimen name="space_24">24dp</dimen>
+    <dimen name="space_32">32dp</dimen>
+
+    <!-- Corner radii -->
+    <dimen name="radius_sheet">24dp</dimen>
+    <dimen name="radius_card">22dp</dimen>
+    <dimen name="radius_container">16dp</dimen>
+    <dimen name="radius_segmented">14dp</dimen>
+    <dimen name="radius_chip">20dp</dimen>
+</resources>

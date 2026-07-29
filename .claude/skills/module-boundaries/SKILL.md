@@ -11,27 +11,29 @@ Multi-module discipline is what separates a codebase that scales from one that b
 
 Rows are modules; columns are what they may depend on. An `x` means the dependency is allowed.
 
-|                    | :core:domain | :core:network | :core:database | :core:data | :feature:list | :feature:detail | :app |
-|--------------------|:-----------:|:-------------:|:--------------:|:----------:|:-------------:|:---------------:|:----:|
-| **:core:domain**    |      —      |               |                |            |               |                 |      |
-| **:core:network**  |      x      |       —       |                |            |               |                 |      |
-| **:core:database** |      x      |               |       —        |            |               |                 |      |
-| **:core:data**     |      x      |       x       |       x        |     —      |               |                 |      |
-| **:feature:list**  |      x      |               |                |            |       —       |                 |      |
-| **:feature:detail**|      x      |               |                |            |               |        —        |      |
-| **:app**           |      x      |               |                |     x      |       x       |        x        |  —   |
+|                    | :core:domain | :core:design | :core:network | :core:database | :core:data | :feature:list | :feature:detail | :app |
+|--------------------|:-----------:|:------------:|:-------------:|:--------------:|:----------:|:-------------:|:---------------:|:----:|
+| **:core:domain**    |      —      |              |               |                |            |               |                 |      |
+| **:core:design**   |             |      —       |               |                |            |               |                 |      |
+| **:core:network**  |      x      |              |       —       |                |            |               |                 |      |
+| **:core:database** |      x      |              |               |       —        |            |               |                 |      |
+| **:core:data**     |      x      |              |       x       |       x        |     —      |               |                 |      |
+| **:feature:list**  |      x      |      x       |               |                |            |       —       |                 |      |
+| **:feature:detail**|      x      |      x       |               |                |            |               |        —        |      |
+| **:app**           |      x      |              |               |                |     x      |       x       |        x        |  —   |
 
 Anything not marked `x` is forbidden and will be rejected in review.
 
 ## The rules in prose
 
 1. **`:core:domain` depends on nothing.** It is pure Kotlin. Apply the `java-library` plugin and `kotlin("jvm")`. Never `com.android.library`.
-2. **`:core:network` depends only on `:core:domain`.** It needs the domain port interfaces to implement them; that's all.
-3. **`:core:database` depends only on `:core:domain`.** Same reasoning.
-4. **`:core:data` depends on `:core:domain`, `:core:network`, and `:core:database`.** It is the only module allowed to combine all three. Repository implementations and `DispatcherProvider` live here.
-5. **Feature modules depend only on `:core:domain`.** They must not know Retrofit exists. They must not know Room exists.
-6. **`:app` is the composition root.** It depends on `:core:domain`, `:core:data`, `:feature:list`, `:feature:detail`. It does NOT directly depend on `:core:network` or `:core:database` — that coupling lives in `:core:data`.
-7. **Features never import each other.** If `:feature:detail` needs something from `:feature:list`, that something belongs in `:core:domain`.
+2. **`:core:design` depends on nothing in the project.** It is an Android library (needs the Android runtime for Compose) but imports no project module — not even `:core:domain`. It only touches AndroidX Compose artifacts.
+3. **`:core:network` depends only on `:core:domain`.** It needs the domain port interfaces to implement them; that's all.
+4. **`:core:database` depends only on `:core:domain`.** Same reasoning.
+5. **`:core:data` depends on `:core:domain`, `:core:network`, and `:core:database`.** It is the only module allowed to combine all three. Repository implementations and `DispatcherProvider` live here.
+6. **Feature modules depend on `:core:domain` and may depend on `:core:design`.** They must not know Retrofit exists. They must not know Room exists.
+7. **`:app` is the composition root.** It depends on `:core:domain`, `:core:data`, `:feature:list`, `:feature:detail`. It does NOT directly depend on `:core:network` or `:core:database` — that coupling lives in `:core:data`.
+8. **Features never import each other.** If `:feature:detail` needs something from `:feature:list`, that something belongs in `:core:domain`.
 
 ## Practical consequences
 
@@ -59,7 +61,8 @@ DTOs live in `:core:network` and Entities in `:core:database`. Mark them `intern
 `:core:domain`, because features need it to expose errors from ViewModels without a `Context`.
 
 ### Where do design system components go?
-For this challenge, keep them in `:app/res/values/themes.xml` and `:app/res/drawable/`. If a `:core:designsystem` module is created later, it's a `com.android.library` that depends on nothing except AndroidX UI libraries — never on `:core:domain`.
+- **XML tokens** (colors, dimens, type styles) — in `:app/res/values/`. Android merges resources transitively; all modules see them without declaring a dependency.
+- **Compose tokens and theme** — in `:core:design`. This module owns `Color.kt`, `Type.kt`, and `IdealistaTheme`. Feature modules with Composables declare `implementation(project(":core:design"))`. `:core:design` must never depend on `:core:domain` — the design system has no concept of domain models.
 
 ## What to do when this feels restrictive
 

@@ -9,7 +9,7 @@ You are the guardian of the project's architecture. Your job is to keep the code
 
 ## Your remit
 
-- Multi-module structure (`:app`, `:core:domain`, `:core:data`, `:core:network`, `:core:database`, `:feature:list`, `:feature:detail`).
+- Multi-module structure (`:app`, `:core:domain`, `:core:design`, `:core:data`, `:core:network`, `:core:database`, `:feature:list`, `:feature:detail`).
 - Gradle configuration: `build.gradle.kts` files, `libs.versions.toml`, plugin management, `settings.gradle.kts`.
 - Hilt setup: `@HiltAndroidApp`, `@Module`/`@InstallIn`, entry points, scoping.
 - Navigation: single Activity with `NavHostFragment`, safe args, deep-linking (if requested).
@@ -53,6 +53,8 @@ You are the guardian of the project's architecture. Your job is to keep the code
 - Someone marks a class `internal` and uses it as a Hilt `@Inject` constructor parameter or `@Binds`/`@Provides` return type → reject. KSP's `InjectProcessingStep` cannot resolve `internal` types across modules; the build fails. Types in the DI graph must be `public`.
 - Someone moves `RemotePropertiesDataSource` or `LocalFavoritesDataSource` into `:core:network` / `:core:database` → reject. These are domain port interfaces and must stay in `:core:domain`. If they live in the adapter module, KSP in `:core:data` cannot resolve them when processing `@Inject` constructors even with `implementation(project(":core:network"))`.
 - Someone adds repository implementations back to `:app` → reject. They belong in `:core:data` so they can be unit-tested in isolation.
+- Someone puts `IdealistaTheme` or Compose color/type tokens inside a feature module → reject. The design system is shared infrastructure; it belongs in `:core:design`, not in any feature.
+- Someone adds `:core:domain` as a dependency of `:core:design` → reject. The design system has no concept of domain models; importing `:core:domain` into it would create a coupling with no justification.
 
 ## When to escalate to the user
 

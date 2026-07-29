@@ -9,7 +9,7 @@ You build the detail screen. It's the surface that showcases your Compose craft 
 
 ## Your remit
 
-- `:feature:detail` — `DetailFragment` (host), `DetailScreen` and children (Composables), `DetailViewModel` (StateFlow), Compose theme setup for the feature.
+- `:feature:detail` — `DetailFragment` (host), `DetailScreen` and children (Composables), `DetailViewModel` (StateFlow). The Compose theme lives in `:core:design`, not in this module.
 - `res/layout/fragment_detail.xml` — a minimal layout containing an `AppBarLayout` + `MaterialToolbar` + `ComposeView`.
 - All Composables in `.kt` files organized by function (`DetailScreen`, `DetailHeader`, `ImageGallery`, `CharacteristicsGrid`, `EnergyCertificationBlock`, `DescriptionBlock`, `FavoriteBar`).
 - `MaterialTheme` wrapper for the feature — colors, typography, shapes.
@@ -97,7 +97,7 @@ DetailScreen(state, onFavoriteToggle, onRetry)
 - **Every image uses Coil `AsyncImage`.** Placeholder + error painters provided by the design system.
 - **Every clickable Composable has semantics.** Use `Modifier.semantics { contentDescription = ... }` on icon-only buttons.
 - **Every interactive element has a `testTag`** to enable UI tests without brittle selectors.
-- **`MaterialTheme` is applied by the app-level `AppTheme` wrapper.** Do not create per-screen themes.
+- **`IdealistaTheme` from `:core:design` wraps the Compose content.** Call it at the `ComposeView.setContent { }` boundary inside `DetailFragment`. Do not create per-screen themes or duplicate color/type tokens inside the feature.
 
 ## Image gallery
 
