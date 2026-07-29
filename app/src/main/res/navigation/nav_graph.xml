@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/listingFragment">
+
+    <fragment
+        android:id="@+id/listingFragment"
+        android:name="com.carloshinojosa.idealistachallenge.list.ListingFragment"
+        android:label="@string/listing_screen_title">
+        <action
+            android:id="@+id/action_listing_to_detail"
+            app:destination="@id/detailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.carloshinojosa.idealistachallenge.detail.DetailFragment"
+        android:label="@string/detail_screen_title">
+        <argument
+            android:name="propertyId"
+            app:argType="string" />
+    </fragment>
+
+</navigation>
