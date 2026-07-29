@@ -40,18 +40,24 @@ Violating any of these blocks the change. If a task requires breaking one, stop 
 
 ```
 :app                        Wiring only. Application class, MainActivity, Hilt entry points,
-                            NavGraph, repository implementations (see §3.1).
-                            Depends on: everything.
+                            NavGraph, ClockModule. No repository implementations.
+                            Depends on: :core:domain, :core:data, :feature:list, :feature:detail.
 
-:core:domain                 Pure Kotlin (no Android). Domain models, repository interfaces,
-                            use cases, UiText, Result wrappers.
+:core:domain                Pure Kotlin (no Android). Domain models, repository interfaces,
+                            data source port interfaces, use cases, Result wrappers.
                             Depends on: nothing.
 
-:core:network               Retrofit + OkHttp + kotlinx.serialization. DTOs and remote data
-                            sources. Exposes interfaces consumed by :app.
-                            Depends on: :core:domain (for domain contracts only).
+:core:data                  Repository implementations, DispatcherProvider, DataModule (@Binds).
+                            The data-layer aggregator — the only module that can see both
+                            :core:network and :core:database simultaneously.
+                            Depends on: :core:domain, :core:network, :core:database.
 
-:core:database              Room database, entities, DAOs. Exposes local data sources.
+:core:network               Retrofit + OkHttp + kotlinx.serialization. DTOs, IdealistaApi,
+                            RemotePropertiesDataSourceImpl, NetworkModule, NetworkBindingsModule.
+                            Depends on: :core:domain.
+
+:core:database              Room database, FavoriteEntity, FavoritesDao,
+                            LocalFavoritesDataSourceImpl, DatabaseModule, DatabaseBindingsModule.
                             Depends on: :core:domain.
 
 :feature:list               Listing screen (XML + Fragment + ListAdapter + LiveData ViewModel).
@@ -63,15 +69,19 @@ Violating any of these blocks the change. If a task requires breaking one, stop 
 
 ### 3.1 Where do repository implementations live?
 
-Repository **interfaces** live in `:core:domain`. Repository **implementations** live in `:app` and are provided via Hilt. Rationale: keeps features fully decoupled from data-layer specifics without introducing a `:data` module, which would be overkill at this scale.
+Repository **interfaces** live in `:core:domain`. Repository **implementations** live in `:core:data` and are bound via Hilt's `DataModule`. `:app` does not hold any implementation — it is the composition root only.
 
-If the codebase grows past this challenge, the migration path is: extract impls to `:data` and re-wire Hilt. Documented in `ADR-001`.
+Rationale: `:app` cannot safely act as the data layer because it makes the DI graph opaque and prevents unit-testing the repository in isolation. `:core:data` is the right aggregation point: it can see both `:core:network` (remote) and `:core:database` (local) without leaking those dependencies to feature modules.
+
+**Data source interfaces** (`RemotePropertiesDataSource`, `LocalFavoritesDataSource`) live in `:core:domain` as domain port interfaces. This is the Dependency Inversion Principle: the domain defines what it needs; the adapters in `:core:network` and `:core:database` implement it. Do NOT move them into the adapter modules — see §8 for why that breaks Hilt/KSP.
 
 ### 3.2 Dependency rules (enforced)
 
 - Features never import each other.
 - Features never depend on `:core:network` or `:core:database`.
 - `:core:domain` depends on nothing (pure Kotlin module — apply the `java-library` plugin, not `com.android.library`).
+- `:core:data` is the only module that may depend on both `:core:network` and `:core:database`.
+- `:app` depends on `:core:data` (not directly on `:core:network` or `:core:database`).
 - Circular dependencies are a build failure. If Gradle doesn't catch it, the reviewer will.
 
 See `.claude/skills/module-boundaries/SKILL.md` for the full matrix.
@@ -162,6 +172,8 @@ If any command fails, the task is not done. Fix it before returning control.
 - Do not reproduce article/text content from any source into this project without paraphrasing and attribution — the property descriptions from the API are user-visible data, not copyrightable content we own.
 - Do not commit generated screenshots or GIFs at commit time — put them in `docs/media/` at the end.
 - Do not mock what you own (repositories are fine to fake, but prefer real UseCases over mocked UseCases in ViewModel tests when they're simple).
+- **Do not mark `internal` any type that participates in Hilt's DI graph.** If a class is used as a constructor parameter in an `@Inject` class, or as the return type of a `@Provides`/`@Binds` method, it must be `public`. Kotlin's `internal` prevents KSP's `InjectProcessingStep` from resolving the type and the build fails with a cryptic error.
+- **Do not move data source interfaces out of `:core:domain`.** `RemotePropertiesDataSource` and `LocalFavoritesDataSource` are domain port interfaces. If they live in `:core:network` or `:core:database`, KSP in `:core:data` cannot resolve them when processing `@Inject` constructors — even with `implementation(project(":core:network"))` — because KSP's symbol resolution does not traverse transitive `implementation` scopes the same way `javac` does.
 
 ---
 
