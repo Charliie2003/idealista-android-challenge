@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="listing_screen_title">Listing</string>
+    <string name="listing_filter_sale">Venta</string>
+    <string name="listing_filter_rent">Alquiler</string>
+    <string name="listing_filter_favorites">Favoritos</string>
+    <string name="listing_count_sale">%d viviendas en venta</string>
+    <string name="listing_count_rent">%d viviendas en alquiler</string>
+    <string name="listing_count_favorites_one">%d vivienda guardada</string>
+    <string name="listing_count_favorites_other">%d viviendas guardadas</string>
+    <string name="listing_saved_on">Guardado el %s</string>
+    <string name="listing_size_label">%d m²</string>
+    <string name="listing_empty_title">Sin viviendas guardadas</string>
+    <string name="listing_empty_body">Guarda las viviendas que más te gusten para encontrarlas fácilmente</string>
+    <string name="listing_error_retry">Reintentar</string>
+    <string name="listing_error_message">No hemos podido cargar las propiedades</string>
+    <string name="listing_location">Madrid</string>
+    <string name="badge_new">Nuevo</string>
+    <string name="cd_fav_save">Guardar en favoritos</string>
+    <string name="cd_fav_saved">Guardado en favoritos</string>
+    <string name="cd_gallery_image">Imagen de la propiedad</string>
+    <string name="cd_segmented_control">Filtrar propiedades</string>
+    <string name="listing_sort">Ordenar</string>
+    <string name="listing_wordmark">idealista challenge</string>
+    <string name="listing_chip_see_all">Ver todas</string>
+    <string name="listing_chip_filter">Filtrar</string>
+    <string name="listing_count_all">%d viviendas</string>
+    <string name="cd_filter_chip">Alternar filtro de propiedades</string>
 </resources>

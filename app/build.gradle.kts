@@ -47,10 +47,11 @@ android {
         warningsAsErrors = true
         // AGP and Gradle wrapper are intentionally kept at the project's bootstrapped versions.
         // Kotlin is intentionally pinned to match the existing KSP version.
-        // GradleDependency: core-ktx ≥1.19.0 requires compileSdk 37 (not installed); pinned to 1.16.0.
+        // GradleDependency: core-ktx ≥1.19.0 requires compileSdk 37; pinned to 1.16.0 until deps are updated.
+        // OldTargetApi: targetSdk intentionally at 36; upgrading to 37 requires updating core-ktx and other deps.
         // UnusedResources: design-system tokens (colors, dimens, type) are declared before feature
         //   screens exist; they will be consumed as those screens are built.
-        disable += listOf("AndroidGradlePluginVersion", "GradleDependency", "NewerVersionAvailable", "UnusedResources")
+        disable += listOf("AndroidGradlePluginVersion", "GradleDependency", "NewerVersionAvailable", "OldTargetApi", "UnusedResources")
     }
 }
 

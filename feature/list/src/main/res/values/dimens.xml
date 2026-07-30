@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Dimensions consumed by this module's layouts and Kotlin code.
+  Values are intentionally identical to those in :app/res/values/dimens.xml so that merging
+  at app-assembly time is a no-op (the app module wins, same value).
+-->
 <resources>
     <!-- Spacing — base 4 dp grid -->
     <dimen name="space_4">4dp</dimen>
+    <dimen name="space_5">5dp</dimen>
+    <dimen name="space_6">6dp</dimen>
     <dimen name="space_8">8dp</dimen>
+    <dimen name="space_10">10dp</dimen>
     <dimen name="space_12">12dp</dimen>
+    <dimen name="space_14">14dp</dimen>
     <dimen name="space_16">16dp</dimen>
+    <dimen name="space_18">18dp</dimen>
     <dimen name="space_24">24dp</dimen>
+    <dimen name="space_28">28dp</dimen>
     <dimen name="space_32">32dp</dimen>
+    <dimen name="space_64">64dp</dimen>
 
     <!-- Corner radii -->
     <dimen name="radius_sheet">24dp</dimen>
@@ -14,27 +26,20 @@
     <dimen name="radius_container">16dp</dimen>
     <dimen name="radius_segmented">14dp</dimen>
     <dimen name="radius_chip">20dp</dimen>
+    <dimen name="radius_badge">8dp</dimen>
 
     <!-- Listing screen tokens -->
     <dimen name="toolbar_height">58dp</dimen>
-    <dimen name="location_chip_height">38dp</dimen>
+    <dimen name="location_chip_height">48dp</dimen>
     <dimen name="seg_padding">4dp</dimen>
     <dimen name="seg_indicator_radius">11dp</dimen>
-    <dimen name="seg_button_height">40dp</dimen>
-    <dimen name="space_5">5dp</dimen>
-    <dimen name="space_6">6dp</dimen>
-    <dimen name="space_10">10dp</dimen>
-    <dimen name="space_14">14dp</dimen>
-    <dimen name="space_18">18dp</dimen>
-    <dimen name="space_28">28dp</dimen>
-    <dimen name="space_64">64dp</dimen>
+    <dimen name="seg_button_height">48dp</dimen>
     <dimen name="touch_target_size">48dp</dimen>
     <dimen name="fav_circle_size">40dp</dimen>
     <dimen name="fav_icon_size">22dp</dimen>
     <dimen name="pin_icon_size">15dp</dimen>
     <dimen name="spec_icon_size">16dp</dimen>
     <dimen name="spec_dot_size">3dp</dimen>
-    <dimen name="radius_badge">8dp</dimen>
     <dimen name="empty_icon_container">80dp</dimen>
     <dimen name="empty_icon_size">36dp</dimen>
 </resources>
