@@ -21,5 +21,9 @@
     <string name="cd_gallery_image">Imagen de la propiedad</string>
     <string name="cd_segmented_control">Filtrar propiedades</string>
     <string name="listing_sort">Ordenar</string>
-    <string name="listing_wordmark">idealista</string>
+    <string name="listing_wordmark">idealista challenge</string>
+    <string name="listing_chip_see_all">Ver todas</string>
+    <string name="listing_chip_filter">Filtrar</string>
+    <string name="listing_count_all">%d viviendas</string>
+    <string name="cd_filter_chip">Alternar filtro de propiedades</string>
 </resources>

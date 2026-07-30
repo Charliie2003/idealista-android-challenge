@@ -42,34 +42,22 @@
                     android:textColor="@color/on_surface"
                     android:letterSpacing="-0.03" />
 
-                <!-- Location chip — decorative, no interaction in this version -->
-                <LinearLayout
+                <!-- Filter toggle chip: tap to show/hide the segmented control -->
+                <TextView
+                    android:id="@+id/filterChip"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/location_chip_height"
-                    android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:paddingStart="@dimen/space_12"
                     android:paddingEnd="@dimen/space_12"
-                    android:background="@drawable/bg_location_chip"
-                    android:importantForAccessibility="no">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_pin"
-                        android:importantForAccessibility="no" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/space_4"
-                        android:text="@string/listing_location"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/on_surface"
-                        android:importantForAccessibility="no" />
-
-                </LinearLayout>
+                    android:background="@drawable/bg_filter_chip"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@string/listing_chip_see_all"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/on_surface"
+                    android:contentDescription="@string/cd_filter_chip" />
 
             </LinearLayout>
 
@@ -82,8 +70,7 @@
                 android:layout_marginEnd="@dimen/space_16"
                 android:layout_marginBottom="@dimen/space_12"
                 android:background="@drawable/bg_segmented_control"
-                android:padding="@dimen/seg_padding"
-                android:contentDescription="@string/cd_segmented_control">
+                android:padding="@dimen/seg_padding">
 
                 <!-- Sliding indicator pill -->
                 <View
@@ -155,15 +142,6 @@
                     android:textColor="@color/on_surface_variant"
                     tools:text="24 viviendas en venta" />
 
-                <Button
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/listing_sort"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/primary_strong" />
-
             </LinearLayout>
 
         </LinearLayout>
@@ -189,7 +167,6 @@
         android:id="@+id/stateFlipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <!-- child[0] = Loading shimmer -->

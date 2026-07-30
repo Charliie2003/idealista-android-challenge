@@ -30,10 +30,10 @@
 
     <!-- Listing screen tokens -->
     <dimen name="toolbar_height">58dp</dimen>
-    <dimen name="location_chip_height">38dp</dimen>
+    <dimen name="location_chip_height">48dp</dimen>
     <dimen name="seg_padding">4dp</dimen>
     <dimen name="seg_indicator_radius">11dp</dimen>
-    <dimen name="seg_button_height">40dp</dimen>
+    <dimen name="seg_button_height">48dp</dimen>
     <dimen name="touch_target_size">48dp</dimen>
     <dimen name="fav_circle_size">40dp</dimen>
     <dimen name="fav_icon_size">22dp</dimen>

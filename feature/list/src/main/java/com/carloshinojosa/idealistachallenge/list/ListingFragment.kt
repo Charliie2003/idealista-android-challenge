@@ -51,6 +51,7 @@ class ListingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         initListeners()
+        syncInitialVisibility()
         initUI()
     }
 
@@ -58,6 +59,7 @@ class ListingFragment : Fragment() {
         viewModel.state.observe(viewLifecycleOwner) { state -> renderState(state) }
 
         viewModel.filter.observe(viewLifecycleOwner) { filter ->
+            updateChipLabel(filter)
             updateTabSelection(filter)
             binding.propertyList.scrollToPosition(0)
         }
@@ -73,6 +75,7 @@ class ListingFragment : Fragment() {
 
     private fun initListeners() {
         binding.retryButton.setOnClickListener { viewModel.onRetryClicked() }
+        binding.filterChip.setOnClickListener { onFilterChipClicked() }
     }
 
     private fun initUI() {
@@ -149,6 +152,7 @@ class ListingFragment : Fragment() {
     }
 
     private fun updateTabSelection(filter: FilterType) {
+        if (filter == FilterType.ALL) return
         val selectedIndex = filter.ordinal
         listOf(binding.tabSale, binding.tabRent, binding.tabFavorites)
             .forEachIndexed { index, button ->
@@ -177,6 +181,52 @@ class ListingFragment : Fragment() {
         }
     }
 
+    private fun onFilterChipClicked() {
+        if (viewModel.filter.value == FilterType.ALL) {
+            binding.segmentIndicator.translationX = 0f
+            showSegmentedControl()
+            viewModel.onFilterChanged(FilterType.SALE)
+        } else {
+            hideSegmentedControl()
+            viewModel.onFilterChanged(FilterType.ALL)
+        }
+    }
+
+    private fun showSegmentedControl() {
+        binding.segmentedContainer.alpha = 0f
+        binding.segmentedContainer.visibility = View.VISIBLE
+        binding.segmentedContainer.animate()
+            .alpha(1f)
+            .setDuration(280L)
+            .setInterpolator(PathInterpolator(0.34f, 1.2f, 0.4f, 1.0f))
+            .start()
+    }
+
+    private fun hideSegmentedControl() {
+        binding.segmentedContainer.animate()
+            .alpha(0f)
+            .setDuration(280L)
+            .setInterpolator(PathInterpolator(0.34f, 1.2f, 0.4f, 1.0f))
+            .withEndAction {
+                binding.segmentedContainer.visibility = View.GONE
+                binding.segmentedContainer.alpha = 1f
+            }
+            .start()
+    }
+
+    private fun updateChipLabel(filter: FilterType) {
+        binding.filterChip.text = getString(
+            if (filter == FilterType.ALL) R.string.listing_chip_filter
+            else R.string.listing_chip_see_all,
+        )
+    }
+
+    private fun syncInitialVisibility() {
+        if (viewModel.filter.value == FilterType.ALL) {
+            binding.segmentedContainer.visibility = View.GONE
+        }
+    }
+
     private fun updateCountText(count: Int) {
         val filter = viewModel.filter.value ?: FilterType.SALE
         binding.countText.text = when (filter) {
@@ -187,6 +237,7 @@ class ListingFragment : Fragment() {
             } else {
                 getString(R.string.listing_count_favorites_other, count)
             }
+            FilterType.ALL -> getString(R.string.listing_count_all, count)
         }
     }
 

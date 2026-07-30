@@ -112,5 +112,6 @@ class ListingViewModel @RequiresApi(Build.VERSION_CODES.O)
         FilterType.SALE      -> items.filter { it.operationType == OPERATION_SALE }
         FilterType.RENT      -> items.filter { it.operationType == OPERATION_RENT }
         FilterType.FAVORITES -> items.filter { it.isFavorite }
+        FilterType.ALL       -> items
     }
 }

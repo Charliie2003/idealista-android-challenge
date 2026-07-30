@@ -226,4 +226,38 @@ class ListingViewModelTest {
 
         assertEquals(0, counts.last())
     }
+
+    // ── filter: ALL ───────────────────────────────────────────────────────────
+
+    @Test
+    fun `state reflects Content with all items when filter is ALL`() {
+        // given – one sale and one rent property
+        val sale = PropertyFixtures.sale(id = "s1")
+        val rent = PropertyFixtures.rent(id = "r1")
+        every { observeProperties() } returns flowOf(Result.Success(listOf(sale, rent)))
+        val vm = createViewModel()
+
+        // when
+        val states = vm.state.collectValues {
+            vm.onFilterChanged(FilterType.ALL)
+        }
+
+        // then – both items appear unfiltered
+        val content = states.last() as ListingUiState.Content
+        assertEquals(2, content.items.size)
+    }
+
+    @Test
+    fun `state reflects Content (not Empty) when filter is ALL and list is empty`() {
+        every { observeProperties() } returns flowOf(Result.Success(emptyList()))
+        val vm = createViewModel()
+
+        // when
+        val states = vm.state.collectValues {
+            vm.onFilterChanged(FilterType.ALL)
+        }
+
+        // then – Empty is reserved for FAVORITES; ALL with no items is Content(emptyList())
+        assertTrue(states.last() is ListingUiState.Content)
+    }
 }
