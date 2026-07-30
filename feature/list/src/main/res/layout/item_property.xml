@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/radius_card"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/outline"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Gallery -->
+        <FrameLayout
+            android:id="@+id/gallery"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintDimensionRatio="20:13">
+
+            <ImageView
+                android:id="@+id/propertyImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/cd_gallery_image"
+                tools:src="@drawable/placeholder_property" />
+
+            <View
+                android:id="@+id/galleryScrim"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_gallery_scrim"
+                android:importantForAccessibility="no" />
+
+            <TextView
+                android:id="@+id/newBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="14dp"
+                android:background="@drawable/bg_badge_new"
+                android:paddingStart="@dimen/space_10"
+                android:paddingEnd="@dimen/space_10"
+                android:paddingTop="@dimen/space_5"
+                android:paddingBottom="@dimen/space_5"
+                android:textAppearance="@style/TextAppearance.Idealista.Overline"
+                android:textColor="@color/on_primary_container"
+                android:text="@string/badge_new"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/operationBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="14dp"
+                android:background="@drawable/bg_badge_operation"
+                android:paddingStart="@dimen/space_10"
+                android:paddingEnd="@dimen/space_10"
+                android:paddingTop="@dimen/space_5"
+                android:paddingBottom="@dimen/space_5"
+                android:textAppearance="@style/TextAppearance.Idealista.Overline"
+                android:textColor="@android:color/white"
+                android:textAllCaps="true"
+                tools:text="Venta" />
+
+            <!-- Favorite touch target: 48dp x 48dp -->
+            <FrameLayout
+                android:id="@+id/favTarget"
+                android:layout_width="@dimen/touch_target_size"
+                android:layout_height="@dimen/touch_target_size"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="@string/cd_fav_save">
+
+                <View
+                    android:id="@+id/favCircle"
+                    android:layout_width="@dimen/fav_circle_size"
+                    android:layout_height="@dimen/fav_circle_size"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_fav_circle" />
+
+                <ImageView
+                    android:id="@+id/favIcon"
+                    android:layout_width="@dimen/fav_icon_size"
+                    android:layout_height="@dimen/fav_icon_size"
+                    android:layout_gravity="center"
+                    android:src="@drawable/selector_favorite"
+                    android:importantForAccessibility="no"
+                    tools:src="@drawable/ic_heart_outline" />
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <!-- Body -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/space_14"
+            android:paddingStart="@dimen/space_16"
+            android:paddingEnd="@dimen/space_16"
+            android:paddingBottom="@dimen/space_16"
+            app:layout_constraintTop_toBottomOf="@id/gallery"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <!-- Price row -->
+            <TextView
+                android:id="@+id/priceAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Idealista.PriceL"
+                android:textColor="@color/on_surface"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="250.000" />
+
+            <TextView
+                android:id="@+id/priceSuffix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/on_surface_variant"
+                app:layout_constraintBaseline_toBaselineOf="@id/priceAmount"
+                app:layout_constraintStart_toEndOf="@id/priceAmount"
+                tools:text="€" />
+
+            <!-- Location row -->
+            <LinearLayout
+                android:id="@+id/whereRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="4dp"
+                app:layout_constraintTop_toBottomOf="@id/priceAmount"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="@dimen/pin_icon_size"
+                    android:layout_height="@dimen/pin_icon_size"
+                    android:src="@drawable/ic_pin"
+                    android:importantForAccessibility="no" />
+
+                <TextView
+                    android:id="@+id/whereText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_5"
+                    android:textAppearance="@style/TextAppearance.Idealista.Body"
+                    android:textColor="@color/on_surface_variant"
+                    tools:text="Salamanca, Madrid" />
+            </LinearLayout>
+
+            <!-- Specs row -->
+            <LinearLayout
+                android:id="@+id/specsRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/space_12"
+                app:layout_constraintTop_toBottomOf="@id/whereRow"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:layout_width="@dimen/spec_icon_size"
+                    android:layout_height="@dimen/spec_icon_size"
+                    android:src="@drawable/ic_bed"
+                    android:importantForAccessibility="no" />
+
+                <TextView
+                    android:id="@+id/bedroomsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_6"
+                    android:textAppearance="@style/TextAppearance.Idealista.Body"
+                    android:textColor="@color/on_surface_variant"
+                    tools:text="3" />
+
+                <View
+                    android:layout_width="@dimen/spec_dot_size"
+                    android:layout_height="@dimen/spec_dot_size"
+                    android:background="@drawable/bg_spec_dot"
+                    android:layout_marginStart="@dimen/space_12"
+                    android:layout_marginEnd="@dimen/space_12" />
+
+                <ImageView
+                    android:layout_width="@dimen/spec_icon_size"
+                    android:layout_height="@dimen/spec_icon_size"
+                    android:src="@drawable/ic_bath"
+                    android:importantForAccessibility="no" />
+
+                <TextView
+                    android:id="@+id/bathroomsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_6"
+                    android:textAppearance="@style/TextAppearance.Idealista.Body"
+                    android:textColor="@color/on_surface_variant"
+                    tools:text="2" />
+
+                <View
+                    android:layout_width="@dimen/spec_dot_size"
+                    android:layout_height="@dimen/spec_dot_size"
+                    android:background="@drawable/bg_spec_dot"
+                    android:layout_marginStart="@dimen/space_12"
+                    android:layout_marginEnd="@dimen/space_12" />
+
+                <ImageView
+                    android:layout_width="@dimen/spec_icon_size"
+                    android:layout_height="@dimen/spec_icon_size"
+                    android:src="@drawable/ic_area"
+                    android:importantForAccessibility="no" />
+
+                <TextView
+                    android:id="@+id/areaText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_6"
+                    android:textAppearance="@style/TextAppearance.Idealista.Body"
+                    android:textColor="@color/on_surface_variant"
+                    tools:text="120 m²" />
+
+            </LinearLayout>
+
+            <!-- Saved pill -->
+            <LinearLayout
+                android:id="@+id/savedPill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/space_10"
+                android:paddingEnd="@dimen/space_10"
+                android:paddingTop="@dimen/space_6"
+                android:paddingBottom="@dimen/space_6"
+                android:background="@drawable/bg_saved_pill"
+                android:layout_marginTop="@dimen/space_12"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/specsRow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_heart_filled"
+                    android:importantForAccessibility="no" />
+
+                <TextView
+                    android:id="@+id/savedDateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_6"
+                    android:textAppearance="@style/TextAppearance.Idealista.Label"
+                    android:textColor="@color/favorite"
+                    tools:text="Guardado el 12 de enero de 2025" />
+            </LinearLayout>
+
+            <!-- Invisible anchor for bottom constraint when savedPill is gone -->
+            <View
+                android:id="@+id/bodyBottomAnchor"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@id/specsRow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

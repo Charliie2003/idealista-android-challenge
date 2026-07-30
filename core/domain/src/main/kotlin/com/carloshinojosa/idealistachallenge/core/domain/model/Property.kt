@@ -31,6 +31,12 @@ data class Property(
     val hasSwimmingPool: Boolean,
     val hasTerrace: Boolean,
     val hasGarden: Boolean,
+    val isNew: Boolean = false,
     val isFavorited: Boolean = false,
     val favoritedAt: Instant? = null,
-)
+) {
+    companion object {
+        const val OPERATION_SALE = "sale"
+        const val OPERATION_RENT = "rent"
+    }
+}

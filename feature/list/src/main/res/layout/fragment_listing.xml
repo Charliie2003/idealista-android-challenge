@@ -1,13 +1,299 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:background="@color/canvas"
+    android:fitsSystemWindows="true">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- AppBar with toolbar and segmented control -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/listing_screen_title" />
+        android:background="@color/surface"
+        android:fitsSystemWindows="true"
+        app:liftOnScroll="true">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Toolbar row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_height"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/space_16"
+                android:paddingEnd="@dimen/space_16">
+
+                <TextView
+                    android:id="@+id/wordmark"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/listing_wordmark"
+                    android:textSize="21sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/on_surface"
+                    android:letterSpacing="-0.03" />
+
+                <!-- Location chip — decorative, no interaction in this version -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/location_chip_height"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/space_12"
+                    android:paddingEnd="@dimen/space_12"
+                    android:background="@drawable/bg_location_chip"
+                    android:importantForAccessibility="no">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_pin"
+                        android:importantForAccessibility="no" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_4"
+                        android:text="@string/listing_location"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/on_surface"
+                        android:importantForAccessibility="no" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Segmented control -->
+            <FrameLayout
+                android:id="@+id/segmentedContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_16"
+                android:layout_marginEnd="@dimen/space_16"
+                android:layout_marginBottom="@dimen/space_12"
+                android:background="@drawable/bg_segmented_control"
+                android:padding="@dimen/seg_padding"
+                android:contentDescription="@string/cd_segmented_control">
+
+                <!-- Sliding indicator pill -->
+                <View
+                    android:id="@+id/segmentIndicator"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/seg_button_height"
+                    android:background="@drawable/bg_tab_active" />
+
+                <!-- Tab buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/seg_button_height"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/tabSale"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/listing_filter_sale"
+                        android:textAppearance="@style/TextAppearance.Idealista.Overline"
+                        android:textColor="@color/surface" />
+
+                    <Button
+                        android:id="@+id/tabRent"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/listing_filter_rent"
+                        android:textAppearance="@style/TextAppearance.Idealista.Overline"
+                        android:textColor="@color/on_surface_variant" />
+
+                    <Button
+                        android:id="@+id/tabFavorites"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/listing_filter_favorites"
+                        android:textAppearance="@style/TextAppearance.Idealista.Overline"
+                        android:textColor="@color/on_surface_variant" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- Meta row: result count + sort placeholder -->
+            <LinearLayout
+                android:id="@+id/metaRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/space_16"
+                android:paddingEnd="@dimen/space_16"
+                android:paddingTop="@dimen/space_12"
+                android:paddingBottom="@dimen/space_4"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/countText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="13sp"
+                    android:textColor="@color/on_surface_variant"
+                    tools:text="24 viviendas en venta" />
+
+                <Button
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/listing_sort"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_strong" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Property list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/propertyList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/space_16"
+        android:paddingEnd="@dimen/space_16"
+        android:paddingBottom="@dimen/space_28"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:visibility="visible"
+        tools:listitem="@layout/item_property" />
+
+    <!-- State overlay: Loading / Error / Empty -->
+    <ViewFlipper
+        android:id="@+id/stateFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- child[0] = Loading shimmer -->
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/space_16">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_property_skeleton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_18" />
+
+                <include layout="@layout/item_property_skeleton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/space_18" />
+
+                <include layout="@layout/item_property_skeleton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <!-- child[1] = Error state -->
+        <LinearLayout
+            android:id="@+id/errorView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="@dimen/space_32">
+
+            <TextView
+                android:id="@+id/errorMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Idealista.Body"
+                android:textColor="@color/on_surface_variant"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/space_16"
+                tools:text="No hemos podido cargar las propiedades" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/retryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listing_error_retry" />
+
+        </LinearLayout>
+
+        <!-- child[2] = Empty (Favoritos tab with 0 items) -->
+        <LinearLayout
+            android:id="@+id/emptyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="@dimen/space_64">
+
+            <FrameLayout
+                android:layout_width="@dimen/empty_icon_container"
+                android:layout_height="@dimen/empty_icon_container"
+                android:background="@drawable/bg_fav_circle"
+                android:layout_marginBottom="@dimen/space_16">
+
+                <ImageView
+                    android:layout_width="@dimen/empty_icon_size"
+                    android:layout_height="@dimen/empty_icon_size"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_heart_outline"
+                    android:importantForAccessibility="no" />
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listing_empty_title"
+                android:textAppearance="@style/TextAppearance.Idealista.Headline"
+                android:textColor="@color/on_surface"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/space_8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listing_empty_body"
+                android:textAppearance="@style/TextAppearance.Idealista.Body"
+                android:textColor="@color/on_surface_variant"
+                android:gravity="center"
+                android:paddingStart="@dimen/space_32"
+                android:paddingEnd="@dimen/space_32" />
+
+        </LinearLayout>
+
+    </ViewFlipper>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
