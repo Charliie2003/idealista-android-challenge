@@ -105,7 +105,8 @@ class ListingFragment : Fragment() {
             tabWidth = innerWidth / 3f
             binding.segmentIndicator.updateLayoutParams { width = tabWidth.toInt() }
             val currentIndex = (viewModel.filter.value ?: FilterType.SALE).ordinal
-            binding.segmentIndicator.translationX = currentIndex * tabWidth
+            val rtlSign = if (container.layoutDirection == View.LAYOUT_DIRECTION_RTL) -1f else 1f
+            binding.segmentIndicator.translationX = currentIndex * tabWidth * rtlSign
         }
         binding.tabSale.setOnClickListener { viewModel.onFilterChanged(FilterType.SALE) }
         binding.tabRent.setOnClickListener { viewModel.onFilterChanged(FilterType.RENT) }
@@ -169,7 +170,8 @@ class ListingFragment : Fragment() {
     }
 
     private fun moveIndicatorTo(index: Int) {
-        val targetX = index * tabWidth
+        val rtlSign = if (binding.segmentedContainer.layoutDirection == View.LAYOUT_DIRECTION_RTL) -1f else 1f
+        val targetX = index * tabWidth * rtlSign
         if (tabWidth == 0f) {
             binding.segmentIndicator.translationX = targetX
             return

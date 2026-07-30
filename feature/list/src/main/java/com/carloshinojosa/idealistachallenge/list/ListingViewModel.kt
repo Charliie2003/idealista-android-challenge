@@ -19,9 +19,12 @@ import com.carloshinojosa.idealistachallenge.list.presentation.model.ListingUiSt
 import com.carloshinojosa.idealistachallenge.list.presentation.model.PropertyCardUiModel
 import com.carloshinojosa.idealistachallenge.list.presentation.model.PropertyMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
@@ -45,18 +48,26 @@ class ListingViewModel @RequiresApi(Build.VERSION_CODES.O)
     private val _filter = MutableLiveData(FilterType.SALE)
     val filter: LiveData<FilterType> = _filter
 
+    private val _retryTrigger = MutableStateFlow(0)
+
     /**
      * Shared mapped flow. Uses an explicit [when] expression instead of Result.map to avoid
      * a name collision between [kotlinx.coroutines.flow.map] and the Result extension.
      * Shared so that [state] and [favoritesCount] collect a single upstream subscription.
+     * Re-fetches from scratch whenever [_retryTrigger] increments.
      */
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val rawFlow: SharedFlow<Result<List<PropertyCardUiModel>>> =
-        observeProperties().map { result ->
-            when (result) {
-                is Result.Success -> Result.Success(result.data.map(mapper::map))
-                is Result.Error -> result
+        _retryTrigger
+            .flatMapLatest {
+                observeProperties().map { result ->
+                    when (result) {
+                        is Result.Success -> Result.Success(result.data.map(mapper::map))
+                        is Result.Error -> result
+                    }
+                }
             }
-        }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), replay = 1)
+            .shareIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), replay = 1)
 
     /**
      * The current UI state, recomputed whenever the active filter changes.
@@ -86,7 +97,7 @@ class ListingViewModel @RequiresApi(Build.VERSION_CODES.O)
     }
 
     fun onRetryClicked() {
-        _filter.value = _filter.value
+        _retryTrigger.value++
     }
 
     private fun toUiState(

@@ -5,7 +5,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.carloshinojosa.idealistachallenge.core.domain.error.DomainError
-import com.carloshinojosa.idealistachallenge.core.domain.model.Property
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ObservePropertiesUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ToggleFavoriteUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.util.Result
@@ -14,7 +13,6 @@ import com.carloshinojosa.idealistachallenge.list.presentation.model.ListingUiSt
 import com.carloshinojosa.idealistachallenge.list.presentation.model.PropertyMapper
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -177,12 +175,12 @@ class ListingViewModelTest {
     // ── retry ─────────────────────────────────────────────────────────────────
 
     @Test
-    fun `onRetryClicked re-evaluates state from the current flow value`() {
-        // given – a mutable source so we can advance it after retry
-        val propertiesFlow = MutableStateFlow<Result<List<Property>>>(
-            Result.Error(DomainError.Network),
+    fun `onRetryClicked triggers a fresh observeProperties call and recovers from error`() {
+        // given – first call returns error, second call (after retry) returns success
+        every { observeProperties() } returnsMany listOf(
+            flowOf(Result.Error(DomainError.Network)),
+            flowOf(Result.Success(listOf(PropertyFixtures.sale()))),
         )
-        every { observeProperties() } returns propertiesFlow
         val vm = createViewModel()
 
         val states = mutableListOf<ListingUiState>()
@@ -191,11 +189,10 @@ class ListingViewModelTest {
 
         assertTrue("Expected initial Error before retry", states.last() is ListingUiState.Error)
 
-        // when – fix the source then retry so switchMap re-subscribes to rawFlow
-        propertiesFlow.value = Result.Success(listOf(PropertyFixtures.sale()))
+        // when
         vm.onRetryClicked()
 
-        // then
+        // then – flatMapLatest re-invokes observeProperties(); second call returns success
         assertTrue("Expected Content after retry", states.last() is ListingUiState.Content)
         vm.state.removeObserver(observer)
     }
