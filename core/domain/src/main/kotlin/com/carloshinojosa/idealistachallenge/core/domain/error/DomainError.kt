@@ -6,4 +6,5 @@ sealed class DomainError(message: String? = null, cause: Throwable? = null) : Ex
     data class Http(val code: Int) : DomainError("HTTP $code")
     object Parse : DomainError("Parse error")
     data class Unknown(override val cause: Throwable) : DomainError(cause = cause)
+    object NotFound : DomainError("Property not found")
 }

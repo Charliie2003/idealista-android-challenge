@@ -68,4 +68,4 @@ This file documents where AI made substantive contributions to the project, per 
 **What AI did NOT decide:**
 - The implementation plan itself (authored by the human as the Epic 4 specification document).
 - Module structure and dependency rules (defined in `CLAUDE.md §3`).
-- Visual design (traced from `detalle_definitivo.html`, the human-provided source of truth).
+- Visual design (the human-provided source of truth).
