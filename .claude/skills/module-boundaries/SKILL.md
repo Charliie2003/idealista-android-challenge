@@ -11,16 +11,17 @@ Multi-module discipline is what separates a codebase that scales from one that b
 
 Rows are modules; columns are what they may depend on. An `x` means the dependency is allowed.
 
-|                    | :core:domain | :core:design | :core:network | :core:database | :core:data | :feature:list | :feature:detail | :app |
-|--------------------|:-----------:|:------------:|:-------------:|:--------------:|:----------:|:-------------:|:---------------:|:----:|
-| **:core:domain**    |      —      |              |               |                |            |               |                 |      |
-| **:core:design**   |             |      —       |               |                |            |               |                 |      |
-| **:core:network**  |      x      |              |       —       |                |            |               |                 |      |
-| **:core:database** |      x      |              |               |       —        |            |               |                 |      |
-| **:core:data**     |      x      |              |       x       |       x        |     —      |               |                 |      |
-| **:feature:list**  |      x      |      x       |               |                |            |       —       |                 |      |
-| **:feature:detail**|      x      |      x       |               |                |            |               |        —        |      |
-| **:app**           |      x      |              |               |                |     x      |       x       |        x        |  —   |
+|                     | :core:domain | :core:design | :core:network | :core:database | :core:data | :feature:list | :feature:detail | :app |
+|---------------------|:-----------:|:------------:|:-------------:|:--------------:|:----------:|:-------------:|:---------------:|:----:|
+| **:core:domain**     |      —      |              |               |                |            |               |                 |      |
+| **:core:design**    |             |      —       |               |                |            |               |                 |      |
+| **:core:network**   |      x      |              |       —       |                |            |               |                 |      |
+| **:core:database**  |      x      |              |               |       —        |            |               |                 |      |
+| **:core:data**      |      x      |              |       x       |       x        |     —      |               |                 |      |
+| **:feature:list**   |      x      |      x       |               |                |            |       —       |                 |      |
+| **:feature:detail** |      x      |      x       |               |                |            |               |        —        |      |
+| **:app**            |      x      |              |               |                |     x      |       x       |        x        |  —   |
+| **:core:testing**   |      x      |              |               |                |            |               |                 |      |
 
 Anything not marked `x` is forbidden and will be rejected in review.
 
@@ -34,6 +35,7 @@ Anything not marked `x` is forbidden and will be rejected in review.
 6. **Feature modules depend on `:core:domain` and may depend on `:core:design`.** They must not know Retrofit exists. They must not know Room exists.
 7. **`:app` is the composition root.** It depends on `:core:domain`, `:core:data`, `:feature:list`, `:feature:detail`. It does NOT directly depend on `:core:network` or `:core:database` — that coupling lives in `:core:data`.
 8. **Features never import each other.** If `:feature:detail` needs something from `:feature:list`, that something belongs in `:core:domain`.
+9. **`:core:testing` is a JVM test-utilities library.** It provides `MainDispatcherRule`, fake repositories, and other test fixtures shared across modules. Declare it exclusively in `testImplementation`/`androidTestImplementation` scopes — never in `implementation`. It depends on `:core:domain` for domain model types used in fakes; it imports nothing else from the project.
 
 ## Practical consequences
 

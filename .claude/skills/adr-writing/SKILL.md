@@ -73,16 +73,18 @@ Links to docs, similar projects, or related ADRs.
 
 Write these as you go — do not write them all upfront.
 
-| # | Title | Trigger |
+| # | Title | Status / Trigger |
 |---|---|---|
-| 0001 | Modularization strategy | When creating the modules |
-| 0002 | Static detail endpoint handling | When implementing `ObservePropertyDetailUseCase` |
-| 0003 | StateFlow over LiveData (with XML exception) | When implementing the first ViewModel |
-| 0004 | No Paging 3 | When implementing the listing (deliberate omission) |
-| 0005 | XML and Compose interoperability approach | When implementing the detail Fragment |
-| 0006 | Favorite timestamp semantics (re-favoriting updates) | When implementing `ToggleFavoriteUseCase` |
-| 0007 | Repository implementations live in `:app` (not `:data`) | When implementing the first repository |
-| 0008 | AI collaboration harness | When finalizing `docs/ai-usage.md` |
+| 0001 | Modularization strategy | **Written** — `docs/adr/0001-modularization-strategy.md` |
+| 0002 | Static detail endpoint handling | **Written** — `docs/adr/0002-static-detail-endpoint-handling.md` |
+| 0003 | Material Components and `:core:design` module | **Written** — `docs/adr/0003-material-components.md` |
+| 0004 | No Paging 3 | **Not written** — decision is in `CLAUDE.md §8`: listing is not paginated, Paging 3 not needed |
+| 0005 | XML and Compose interoperability approach | **Written** — `docs/adr/0005-xml-compose-interoperability.md` |
+| 0006 | Favorite timestamp semantics (re-favoriting updates) | **Written** — `docs/adr/0006-favorite-timestamp-semantics.md` |
+| 0007 | Repository implementations location | **Not written** — decision reversed; original "impls in `:app`" superseded by `:core:data` extraction absorbed into ADR-0001 update |
+| 0008 | AI collaboration harness | **Not written** — covered by `CLAUDE.md §5` and `docs/ai-usage.md` |
+| 0009 | Characteristics section as `FlowRow` of `SuggestionChip` | **Written** — `docs/adr/0009-characteristics-flowrow-chips.md` |
+| 0010 | Static map placeholder (canvas vs Google Maps SDK) | **Not written** — placeholder removed from the final implementation |
 
 ## Example ADR (template you can adapt)
 
