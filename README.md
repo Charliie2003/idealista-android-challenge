@@ -1,4 +1,4 @@
-# Idealista Android Challenge
+# Idealista Android Challenge <img src="docs/media/idealista_challenge.png" height="48" alt="App logo">
 
 Technical challenge for Idealista. The app fetches a property listing from a static JSON API, displays each property in an XML-based list, and opens a Jetpack Compose detail screen with a live favorites toggle backed by Room. It demonstrates clean multi-module architecture, strict dependency boundaries, both XML and Compose UI, Hilt DI, Jetpack Navigation, and an AI-assisted development workflow.
 
@@ -6,11 +6,28 @@ Technical challenge for Idealista. The app fetches a property listing from a sta
 
 ## Screenshots
 
-| Listing                                                                                                           | Detail                                                                                                                            | IntentShare                                 |
-|-------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
-| ![Listing](docs/media/list_see_all.png) ![Listing](docs/media/sell_list.png) ![Listing](docs/media/rent_list.png) | ![Detail](docs/media/detail_partial.png) ![Detail](docs/media/detail_complete_1.png)  ![Detail](docs/media/detail_complete_2.png) | ![IntentShare](docs/media/intent_share.png) |
-
-> Screenshots are added before submission. Paths above are under `docs/media/` (tracked via `.gitkeep`).
+<table>
+  <tr>
+    <th>Listing</th>
+    <th>Detail</th>
+    <th>Intent Share</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="docs/media/list_see_all.png" width="180" alt="Listing – all"><br>
+      <img src="docs/media/sell_list.png" width="180" alt="Listing – sale"><br>
+      <img src="docs/media/rent_list.png" width="180" alt="Listing – rent">
+    </td>
+    <td>
+      <img src="docs/media/detail_partial.png" width="180" alt="Detail – top"><br>
+      <img src="docs/media/detail_complete_1.png" width="180" alt="Detail – mid"><br>
+      <img src="docs/media/detail_complete_2.png" width="180" alt="Detail – bottom">
+    </td>
+    <td>
+      <img src="docs/media/intent_share.png" width="180" alt="Intent share">
+    </td>
+  </tr>
+</table>
 
 ---
 
@@ -187,7 +204,7 @@ ADR-0004 (No Paging 3), ADR-0007 (repository location), ADR-0008 (AI harness), a
 
 ## What I would do with more time
 
-- **Real map integration.** Replace the static placeholder in `LocationBlock` with the Google Maps SDK or a key-free tile provider (MapLibre/OpenStreetMap). A live map requires an API key management strategy not suitable for a public challenge repo.
+- **Real map integration.** Integrate the Google Maps SDK or a key-free tile provider (MapLibre/OpenStreetMap). A live map requires an API key management strategy not suitable for a public challenge repo.
 - **Offline-first with `NetworkBoundResource`.** The current flow fetches from network and caches in memory. A proper offline-first strategy would persist the listing to Room and serve stale data while refreshing in the background.
 - **Paging when the endpoint is paginated.** The current endpoint returns all items in one response. If Idealista's production API is paginated, Paging 3 would replace the current `List<Property>` flow — but not before the endpoint actually requires it.
 - **Espresso + Compose E2E test for the full favorite flow.** The `testing-specialist` agent defined the required flow (list → tap favorite → open detail → verify state → toggle off → back → verify list). It was not implemented due to time; the unit and ViewModel tests cover the individual pieces.
