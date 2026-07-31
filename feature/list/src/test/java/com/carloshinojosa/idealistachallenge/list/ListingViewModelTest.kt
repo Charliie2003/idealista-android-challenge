@@ -5,7 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.carloshinojosa.idealistachallenge.core.domain.error.DomainError
-import com.carloshinojosa.idealistachallenge.core.domain.usecase.GetPropertyDetailUseCase
+import com.carloshinojosa.idealistachallenge.core.domain.usecase.ObservePropertiesUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ToggleFavoriteUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.util.Result
 import com.carloshinojosa.idealistachallenge.list.presentation.model.FilterType
@@ -32,7 +32,7 @@ class ListingViewModelTest {
     val instantTaskRule = InstantTaskExecutorRule()
 
     // MockK mocks classes (final Kotlin classes) using inline mocking.
-    private val observeProperties: GetPropertyDetailUseCase = mockk()
+    private val observeProperties: ObservePropertiesUseCase = mockk()
     private val toggleFavorite: ToggleFavoriteUseCase = mockk(relaxed = true)
 
     // Context with relaxed mock: getString returns "" for all calls; the mapper still produces

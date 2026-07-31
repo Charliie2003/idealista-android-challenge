@@ -10,7 +10,7 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.carloshinojosa.idealistachallenge.core.domain.model.Property.Companion.OPERATION_RENT
 import com.carloshinojosa.idealistachallenge.core.domain.model.Property.Companion.OPERATION_SALE
-import com.carloshinojosa.idealistachallenge.core.domain.usecase.GetPropertyDetailUseCase
+import com.carloshinojosa.idealistachallenge.core.domain.usecase.ObservePropertiesUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ToggleFavoriteUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.util.Result
 import com.carloshinojosa.idealistachallenge.design.ui.theme.UiText
@@ -40,7 +40,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ListingViewModel @RequiresApi(Build.VERSION_CODES.O)
 @Inject constructor(
-    private val observeProperties: GetPropertyDetailUseCase,
+    private val observeProperties: ObservePropertiesUseCase,
     private val toggleFavorite: ToggleFavoriteUseCase,
     private val mapper: PropertyMapper,
 ) : ViewModel() {

@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.IsFavoriteUseCase
-import com.carloshinojosa.idealistachallenge.core.domain.usecase.ObservePropertyDetailUseCase
+import com.carloshinojosa.idealistachallenge.core.domain.usecase.GetPropertyDetailUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ToggleFavoriteUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.util.Result
 import com.carloshinojosa.idealistachallenge.design.ui.theme.UiText
@@ -39,7 +39,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getDetail: ObservePropertyDetailUseCase,
+    private val getDetail: GetPropertyDetailUseCase,
     private val isFavorite: IsFavoriteUseCase,
     private val toggleFavorite: ToggleFavoriteUseCase,
     private val mapper: DetailMapper,

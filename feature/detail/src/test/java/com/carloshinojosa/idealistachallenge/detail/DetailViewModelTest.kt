@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.carloshinojosa.idealistachallenge.core.domain.error.DomainError
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.IsFavoriteUseCase
-import com.carloshinojosa.idealistachallenge.core.domain.usecase.ObservePropertyDetailUseCase
+import com.carloshinojosa.idealistachallenge.core.domain.usecase.GetPropertyDetailUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ToggleFavoriteUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.util.Result
 import com.carloshinojosa.idealistachallenge.detail.presentation.mapper.DetailMapper
@@ -44,7 +44,7 @@ class DetailViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val getDetail: ObservePropertyDetailUseCase = mockk()
+    private val getDetail: GetPropertyDetailUseCase = mockk()
     private val isFavorite: IsFavoriteUseCase = mockk()
     private val toggleFavorite: ToggleFavoriteUseCase = mockk(relaxed = true)
     private val mapper: DetailMapper = mockk(relaxed = true)
