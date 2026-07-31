@@ -1,7 +1,8 @@
 # ADR-0001 — Modularization strategy
 
-**Status:** Accepted
-**Date:** 2026-07-28
+**Status:** Accepted  
+**Date:** 2026-07-28  
+**Updated:** 2026-07-31  
 **Deciders:** Carlos Hinojosa
 
 ## Context
@@ -10,37 +11,45 @@ The Idealista Android Challenge requires demonstrating clean architecture with b
 Compose UI. The app is small enough to ship as a monolith, but module boundaries are
 required to show separation of concerns and enforce dependency rules at build time.
 The key tension is between simplicity (fewer modules) and encapsulation (stronger boundaries).
-A separate `:data` module is common in enterprise projects but adds a module for no
-architectural gain at this scale — the app has one network source and one database.
+A critical constraint is that feature modules must never import Room or Retrofit — this must
+be enforced by the build graph, not by convention.
 
 ## Decision
 
-Use six modules: `:app`, `:core:domain`, `:core:network`, `:core:database`,
-`:feature:list`, `:feature:detail`. Repository **interfaces** live in `:core:domain`.
-Repository **implementations** live in `:app` and are provided via Hilt modules.
-This keeps features decoupled from the data layer without introducing a `:data`
-module whose only job would be wiring — a job `:app` already does as the composition root.
+Use seven modules: `:app`, `:core:domain`, `:core:data`, `:core:network`, `:core:database`,
+`:core:design`, `:feature:list`, `:feature:detail`.
+
+- Repository **interfaces** and DataSource **port interfaces** live in `:core:domain`.
+- Repository **implementations** live in `:core:data` — the only module that can see both
+  `:core:network` and `:core:database` simultaneously. This makes the Dependency Inversion
+  Principle explicit at the build level.
+- `:app` is the composition root only: `Application` class, `MainActivity`, `NavGraph`, and
+  the `ClockModule` Hilt entry point. It holds no repository implementations.
+- `:core:design` is a standalone Android library owning all Compose design tokens
+  (`Color`, `Type`, `IdealistaTheme`). Feature modules import it without pulling in any
+  business logic.
 
 ## Alternatives considered
 
 - **Single `:app` module.** Rejected — no build-time enforcement of layer boundaries;
   a ViewModel could accidentally import Room entities.
-- **Add a `:data` module** for repository implementations. Rejected — premature at this
-  scale; `:app` already has a wiring role and adding `:data` creates a module with no
-  domain logic of its own, only glue code. Migration path is documented as a Follow-up.
+- **Repository implementations in `:app`.** Rejected — makes `:app` depend directly on
+  `:core:network` and `:core:database`, widening the composition root's scope unnecessarily
+  and making the DI graph opaque to reviewers.
 - **Feature modules own their repository implementations.** Rejected — forces each feature
   to depend on `:core:network` and `:core:database`, breaking the boundary matrix.
 
 ## Consequences
 
 - **Positive:** Features are fully decoupled from the data layer. Swapping a repository
-  implementation (e.g. adding an offline cache) never touches feature code. Build graph
-  is acyclic and auditable.
-- **Negative:** `:app`'s `build.gradle.kts` depends on all other modules; it is the
-  widest dependency scope in the project. Acceptable — `:app` is the composition root
-  by design.
-- **Follow-ups:** If the project grows beyond this challenge, extract repository
-  implementations to a `:data` module and re-wire Hilt. No feature code changes needed.
+  implementation (e.g. replacing the in-memory cache with a database cache) never touches
+  feature code. Build graph is acyclic and auditable.
+- **Positive:** `:core:data` is the single module whose `build.gradle.kts` depends on both
+  `:core:network` and `:core:database`. This boundary is visible and testable in isolation
+  (`PropertiesRepositoryImplTest` runs without touching `:app`).
+- **Negative:** `:core:data`'s `build.gradle.kts` has the widest dependency scope in the
+  project (`:core:domain` + `:core:network` + `:core:database`). Acceptable — it is the
+  aggregation layer by design.
 
 ## References
 
