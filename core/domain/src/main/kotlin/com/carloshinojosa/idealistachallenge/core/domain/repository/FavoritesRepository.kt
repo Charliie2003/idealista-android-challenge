@@ -4,7 +4,7 @@ import com.carloshinojosa.idealistachallenge.core.domain.model.Favorite
 import kotlinx.coroutines.flow.Flow
 import java.time.Instant
 
-/** Contract for the favorites repository. Implementation lives in :app. */
+/** Contract for the favorites repository. Implementation lives in :core:data. */
 interface FavoritesRepository {
     fun observeFavorites(): Flow<List<Favorite>>
     suspend fun toggle(id: String, at: Instant)
