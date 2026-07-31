@@ -127,11 +127,12 @@ class DetailMapperTest {
     @Test
     fun `map highlights use the base property floor when moreCharacteristics is absent`() {
         // property.floor = "2"; when mc is null the mapper falls back to property.floor
+        // floorString returns the raw value without adding an ordinal suffix.
         val detail = DetailFixtures.propertyDetail(isEnriched = false)
 
         val ui = mapper.map(detail)
 
-        assertEquals("2ª", ui.highlights.floorLabel)
+        assertEquals("2", ui.highlights.floorLabel)
     }
 
     // ── community costs ───────────────────────────────────────────────────────
