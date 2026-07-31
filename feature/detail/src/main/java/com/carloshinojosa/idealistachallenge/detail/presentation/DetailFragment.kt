@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import com.carloshinojosa.idealistachallenge.design.ui.theme.IdealistaTheme
 import com.carloshinojosa.idealistachallenge.detail.R
 import com.carloshinojosa.idealistachallenge.detail.databinding.FragmentDetailBinding
-import com.carloshinojosa.idealistachallenge.detail.presentation.DetailUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -63,7 +62,8 @@ class DetailFragment : Fragment() {
     private fun shareProperty(state: DetailUiState) {
         val content = state as? DetailUiState.Content ?: return
         val p = content.property
-        val text = "${p.title}\n${p.operationLabel} · ${p.priceLabel} ${p.priceSuffix}\n${p.neighborhood}, ${p.district}, ${p.municipality}"
+        val text = "${p.title}\n${p.operationLabel} · ${p.priceLabel} ${p.priceSuffix}" +
+            "\n${p.neighborhood}, ${p.district}, ${p.municipality}"
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, text)

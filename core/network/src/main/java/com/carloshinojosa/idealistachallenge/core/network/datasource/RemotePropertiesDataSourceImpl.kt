@@ -25,6 +25,9 @@ class RemotePropertiesDataSourceImpl @Inject constructor(
             api.getDetail().toDomain()
         }
 
+    // IOException is intentionally not propagated — it is translated to DomainError.Network.
+    // Exception catch-all wraps unknown throwables into DomainError.Unknown; neither is swallowed.
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     private inline fun <T> safeApiCall(block: () -> T): Result<T> = try {
         Result.Success(block())
     } catch (error: CancellationException) {

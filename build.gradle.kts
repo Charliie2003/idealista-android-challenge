@@ -6,4 +6,20 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.navigation.safeargs) apply false
+    alias(libs.plugins.detekt)
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    config.setFrom("$rootDir/config/detekt/detekt.yml")
+    source.setFrom(
+        fileTree(".") {
+            include("**/src/main/**/*.kt", "**/src/test/**/*.kt")
+            exclude("**/build/**")
+        }
+    )
+}
+
+dependencies {
+    detektPlugins(libs.detekt.formatting)
 }

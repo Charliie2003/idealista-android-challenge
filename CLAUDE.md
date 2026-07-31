@@ -71,6 +71,13 @@ Violating any of these blocks the change. If a task requires breaking one, stop 
 :feature:detail             Detail screen (Fragment host + Compose content + StateFlow ViewModel).
                             Depends on: :core:domain, :core:design.
                             NEVER on :core:network or :core:database.
+
+:core:testing               Test utilities shared across modules. MainDispatcherRule,
+                            FakeFavoritesRepository, FakePropertiesDataSource, and other
+                            test fixtures. JVM library (java-library plugin, no Android runtime).
+                            Depends on: :core:domain (domain models used in fakes).
+                            Declared in testImplementation/androidTestImplementation only.
+                            NEVER in production implementation scope.
 ```
 
 ### 3.1 Where do repository implementations live?
@@ -109,7 +116,8 @@ See `.claude/skills/module-boundaries/SKILL.md` for the full matrix.
 | Navigation | Jetpack Navigation with a single Activity | Two destinations: list, detail. |
 | Listing UI | XML + ViewBinding + `ListAdapter` + `DiffUtil` | LiveData allowed. |
 | Detail UI | ComposeView inside a Fragment | StateFlow required. |
-| Testing | JUnit 4 + MockK + Turbine + Coroutines Test + Espresso + Compose UI Test | See `.claude/skills/testing-patterns/SKILL.md`. |
+| Loading skeleton | Shimmer | `ShimmerFrameLayout` wrapping XML placeholder views in the listing. |
+| Testing | JUnit 4 + MockK + Turbine + Coroutines Test + AssertK + Espresso + Compose UI Test | AssertK chosen over Truth; version catalog has both, only AssertK is used. See `.claude/skills/testing-patterns/SKILL.md`. |
 | Static analysis | Detekt + Ktlint (via Detekt) + Android Lint | All must pass in CI-equivalent local run. |
 
 **Do not add libraries without justification in an ADR.** Reviewer will scan the version catalog and question every entry.

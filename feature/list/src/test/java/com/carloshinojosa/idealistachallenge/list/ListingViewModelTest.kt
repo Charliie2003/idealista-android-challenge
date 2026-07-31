@@ -12,6 +12,8 @@ import com.carloshinojosa.idealistachallenge.list.presentation.model.FilterType
 import com.carloshinojosa.idealistachallenge.list.presentation.ListingUiState
 import com.carloshinojosa.idealistachallenge.list.presentation.ListingViewModel
 import com.carloshinojosa.idealistachallenge.list.presentation.mapper.PropertyMapper
+import com.carloshinojosa.idealistachallenge.core.testing.MainDispatcherRule
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -257,5 +259,45 @@ class ListingViewModelTest {
 
         // then – Empty is reserved for FAVORITES; ALL with no items is Content(emptyList())
         assertTrue(states.last() is ListingUiState.Content)
+    }
+
+    // ── favorite click delegation ──────────────────────────────────────────────
+
+    @Test
+    fun `onFavoriteClicked delegates to ToggleFavoriteUseCase with the correct id`() {
+        every { observeProperties() } returns flowOf(Result.Success(listOf(PropertyFixtures.sale(id = "1"))))
+        val vm = createViewModel()
+
+        // Observe state so rawFlow starts (WhileSubscribed)
+        vm.state.observeForever {}
+
+        vm.onFavoriteClicked("1")
+
+        coVerify { toggleFavorite("1") }
+    }
+
+    // ── WhileSubscribed replay ────────────────────────────────────────────────
+
+    @Test
+    fun `state delivers cached value to a new observer without re-triggering load`() {
+        // given
+        val sale = PropertyFixtures.sale(id = "s1")
+        every { observeProperties() } returns flowOf(Result.Success(listOf(sale)))
+        val vm = createViewModel()
+
+        // first observer: starts the upstream, receives Content
+        val firstStates = vm.state.collectValues()
+        val content = firstStates.last() as ListingUiState.Content
+        assertEquals(1, content.items.size)
+
+        // second observer: attaches before 5 s grace period expires (UnconfinedTestDispatcher
+        // does not advance virtual time, so we're still within the window)
+        val secondStates = vm.state.collectValues()
+
+        // should receive the replay-1 cached value, not null
+        assertTrue(
+            "Expected Content from replay, got: $secondStates",
+            secondStates.last() is ListingUiState.Content,
+        )
     }
 }

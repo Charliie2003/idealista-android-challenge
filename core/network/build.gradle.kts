@@ -39,4 +39,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.jakewharton.retrofit.serialization)
     testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.test.runner)
 }

@@ -21,7 +21,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Maps [com.carloshinojosa.idealistachallenge.core.domain.model.PropertyDetail] (domain) to [com.carloshinojosa.idealistachallenge.detail.presentation.model.PropertyDetailUiModel] (UI layer).
+ * Maps [PropertyDetail] (domain) to [PropertyDetailUiModel] (UI layer).
  * String resources and number formatting are resolved here so Composables stay stateless.
  * java.time is available on API 24+ via coreLibraryDesugaring — no @RequiresApi needed.
  */
@@ -135,9 +135,11 @@ class DetailMapper @Inject constructor(
             CharacteristicUiModel(
                 icon = R.drawable.ic_house,
                 label = context.getString(R.string.detail_char_boxroom),
-                value = if (mc.boxroom) context.getString(R.string.detail_yes) else context.getString(
-                    R.string.detail_no
-                ),
+                value = if (mc.boxroom) {
+                    context.getString(R.string.detail_yes)
+                } else {
+                    context.getString(R.string.detail_no)
+                },
             )
         )
     }

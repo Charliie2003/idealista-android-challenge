@@ -64,7 +64,9 @@ internal object DetailFixtures {
                 energyConsumptionType = energyCertificationType,
                 emissionsType = "D",
             )
-        } else null,
+        } else {
+            null
+        },
         images = listOf(
             ImageItem(url = "https://cdn.example.com/salon.jpg", tag = "salon", localizedName = "Salon"),
         ),

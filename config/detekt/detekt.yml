@@ -1,0 +1,98 @@
+build:
+  maxIssues: 0
+
+config:
+  validation: true
+  warningsAsErrors: false
+
+complexity:
+  ComplexCondition:
+    threshold: 4
+  CyclomaticComplexMethod:
+    threshold: 15
+    ignoreSingleWhenExpression: true
+  LongMethod:
+    # Composables and Fragment setup methods naturally exceed 60 lines.
+    threshold: 80
+  LongParameterList:
+    functionThreshold: 8
+    constructorThreshold: 8
+    ignoreDefaultParameters: true
+  TooManyFunctions:
+    # Fragment lifecycle + helpers naturally produce more than 15 methods.
+    thresholdInClasses: 25
+    thresholdInObjects: 15
+
+naming:
+  FunctionNaming:
+    # Allow backtick test function names (e.g. `emits Loading as initial state`)
+    functionPattern: '[a-zA-Z][a-zA-Z0-9]*|`[^`]+`'
+
+formatting:
+  # Ktlint rules via detekt-formatting
+  MaximumLineLength:
+    maxLineLength: 120
+  ImportOrdering:
+    # Existing code uses IDE-default ordering; enforcing Ktlint strict order causes churn.
+    active: false
+  NoWildcardImports:
+    active: true
+  TrailingCommaOnCallSite:
+    # Existing code does not use trailing commas in call sites; enabling this causes mass churn.
+    active: false
+  TrailingCommaOnDeclarationSite:
+    # Same rationale as TrailingCommaOnCallSite.
+    active: false
+  NoMultipleSpaces:
+    # Alignment spaces are used intentionally in when/switch blocks for readability.
+    active: false
+  ArgumentListWrapping:
+    # Existing code wraps argument lists differently from Ktlint's expectation.
+    active: false
+  Wrapping:
+    # DetailMapper uses single-line if-else for enum mappings; changing would reduce readability.
+    active: false
+  NewLineAtEndOfFile:
+    # FinalNewline (Ktlint) covers this; disable the Detekt duplicate.
+    active: false
+
+style:
+  MagicNumber:
+    ignoreNumbers:
+      - '-1'
+      - '0'
+      - '1'
+      - '2'
+    ignorePropertyDeclaration: true
+    ignoreLocalVariableDeclaration: true
+    ignoreAnnotation: true
+    ignoreEnums: true
+    ignoreRanges: true
+    # Named arguments in Compose dp/sp modifiers are not magic numbers in context.
+    ignoreNamedArgument: true
+  ReturnCount:
+    # Kotlin early-return idiom; threshold of 2 is too strict for real-world Kotlin.
+    max: 4
+  UnusedPrivateMember:
+    # @Preview Compose functions are private and look unused to static analysis but are
+    # consumed by Android Studio's preview tool at design time.
+    ignoreAnnotated:
+      - "Preview"
+  WildcardImport:
+    active: true
+
+performance:
+  SpreadOperator:
+    # Used for vararg forwarding (e.g., UiText.StringResource args); acceptable pattern.
+    active: false
+
+comments:
+  UndocumentedPublicClass:
+    active: false
+  UndocumentedPublicFunction:
+    active: false
+
+processors:
+  active: true
+  exclude:
+    - 'DetektProgressListener'

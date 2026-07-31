@@ -1,3 +1,3 @@
 # :app
 
-Composition root. Hosts `IdealistaApp` (`@HiltAndroidApp`), `MainActivity` (single Activity with `NavHostFragment`), the navigation graph, and all Hilt modules that wire repository implementations to their interfaces. Depends on every other module. No business logic lives here — only wiring and entry points.
+Composition root. Hosts `IdealistaApp` (`@HiltAndroidApp`), `MainActivity` (single Activity with `NavHostFragment`), the navigation graph, and the app-level `ClockModule`. Feature and core modules own the Hilt bindings for their implementations. Depends on the data and feature modules; test-only dependencies provide network replacement bindings for instrumented tests. No business logic lives here — only wiring and entry points.

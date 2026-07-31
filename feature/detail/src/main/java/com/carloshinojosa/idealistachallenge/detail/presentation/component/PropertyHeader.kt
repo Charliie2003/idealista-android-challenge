@@ -34,6 +34,9 @@ import com.carloshinojosa.idealistachallenge.detail.presentation.model.EnergyUiM
 import com.carloshinojosa.idealistachallenge.detail.presentation.model.ImageUiModel
 import com.carloshinojosa.idealistachallenge.detail.presentation.model.PropertyDetailUiModel
 
+/** Fully-circular corner radius percentage for pill-shaped chips. */
+private const val CHIP_CORNER_PERCENT = 50
+
 @Composable
 internal fun PropertyHeader(
     property: PropertyDetailUiModel,
@@ -94,6 +97,7 @@ internal fun PropertyHeader(
     }
 }
 
+@Suppress("MagicNumber")
 @Preview(name = "PropertyHeader — venta con estado", showBackground = true, widthDp = 360)
 @Composable
 private fun PreviewPropertyHeader() {
@@ -161,7 +165,7 @@ private fun SurfaceChip(
         fontWeight = FontWeight.SemiBold,
         color = textColor,
         modifier = modifier
-            .clip(RoundedCornerShape(50))
+            .clip(RoundedCornerShape(CHIP_CORNER_PERCENT))
             .background(backgroundColor)
             .padding(horizontal = 10.dp, vertical = 4.dp),
     )

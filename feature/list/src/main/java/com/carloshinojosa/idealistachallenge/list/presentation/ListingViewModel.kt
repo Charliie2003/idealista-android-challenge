@@ -1,7 +1,5 @@
 package com.carloshinojosa.idealistachallenge.list.presentation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,8 +36,7 @@ import javax.inject.Inject
  * StateFlow is used in the detail screen (Compose).
  */
 @HiltViewModel
-class ListingViewModel @RequiresApi(Build.VERSION_CODES.O)
-@Inject constructor(
+class ListingViewModel @Inject constructor(
     private val observeProperties: ObservePropertiesUseCase,
     private val toggleFavorite: ToggleFavoriteUseCase,
     private val mapper: PropertyMapper,

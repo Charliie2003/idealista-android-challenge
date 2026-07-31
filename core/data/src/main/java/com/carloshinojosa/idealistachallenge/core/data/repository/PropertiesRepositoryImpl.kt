@@ -39,8 +39,11 @@ class PropertiesRepositoryImpl @Inject constructor(
         val enrichment = remoteDataSource.fetchPropertyDetailEnrichment().getOrNull()
         return Result.Success(
             // See ADR-0002: the detail endpoint always returns adid=1 — only enrich the matching property.
-            if (enrichment != null && enrichment.id == id) base.enrichWith(enrichment)
-            else base.toBaseDetail()
+            if (enrichment != null && enrichment.id == id) {
+                base.enrichWith(enrichment)
+            } else {
+                base.toBaseDetail()
+            }
         )
     }
 

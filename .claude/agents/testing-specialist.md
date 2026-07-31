@@ -48,7 +48,7 @@ This test lives in `:app` (or in a `:feature:list` androidTest if wired). It com
 - **MockK** — for mocking. Prefer fakes over mocks when the collaborator is your own code.
 - **Turbine** — for asserting Flow emissions in ViewModel tests.
 - **kotlinx-coroutines-test** — `runTest`, `TestDispatcher`, `MainDispatcherRule`.
-- **Truth** or **AssertK** — for readable assertions. Pick one, use it everywhere.
+- **AssertK** — for readable assertions. Use it everywhere. (`assertk` is in the version catalog; `Truth` is not.)
 - **Espresso** + **espresso-contrib** — for RecyclerView actions.
 - **Compose UI Test** — `createAndroidComposeRule<HiltComponentActivity>()` for the detail screen.
 - **Room testing** — `Room.inMemoryDatabaseBuilder(...).allowMainThreadQueries().build()`.

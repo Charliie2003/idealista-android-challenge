@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.detail
+package com.carloshinojosa.idealistachallenge.core.testing
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -11,8 +11,8 @@ import org.junit.runner.Description
 
 /**
  * JUnit 4 rule that installs a [TestDispatcher] as [Dispatchers.Main] for the duration of a test.
- * Required for any test that creates a ViewModel (which uses viewModelScope backed by
- * Dispatchers.Main) or collects a StateFlow that uses WhileSubscribed.
+ * Required for any test that creates a ViewModel (which uses viewModelScope) or collects a Flow
+ * via [androidx.lifecycle.asLiveData].
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainDispatcherRule(
