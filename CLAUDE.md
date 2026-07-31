@@ -179,8 +179,87 @@ If any command fails, the task is not done. Fix it before returning control.
 - Do not reproduce article/text content from any source into this project without paraphrasing and attribution — the property descriptions from the API are user-visible data, not copyrightable content we own.
 - Do not commit generated screenshots or GIFs at commit time — put them in `docs/media/` at the end.
 - Do not mock what you own (repositories are fine to fake, but prefer real UseCases over mocked UseCases in ViewModel tests when they're simple).
+- **Do not use `painterResource()` with `layer-list` drawables** — it throws `IllegalArgumentException` at runtime. Use `Modifier.background(color)` for placeholders. See §10.
+- **Do not use `AssistChip(enabled = false)` for informational content.** Use `SuggestionChip`. `AssistChip` disabled implies "unavailable feature". See §10.
+- **Do not use `pagerState.currentPage` as a `LaunchedEffect` key** when calling `animateScrollToPage` — the coroutine is cancelled mid-animation. Use `pagerState.settledPage`. See §10.
+- **Do not add `@RequiresApi(O)` to suppress java.time lint warnings.** Enable `isCoreLibraryDesugaringEnabled = true` instead. See §10.
 - **Do not mark `internal` any type that participates in Hilt's DI graph.** If a class is used as a constructor parameter in an `@Inject` class, or as the return type of a `@Provides`/`@Binds` method, it must be `public`. Kotlin's `internal` prevents KSP's `InjectProcessingStep` from resolving the type and the build fails with a cryptic error.
 - **Do not move data source interfaces out of `:core:domain`.** `RemotePropertiesDataSource` and `LocalFavoritesDataSource` are domain port interfaces. If they live in `:core:network` or `:core:database`, KSP in `:core:data` cannot resolve them when processing `@Inject` constructors — even with `implementation(project(":core:network"))` — because KSP's symbol resolution does not traverse transitive `implementation` scopes the same way `javac` does.
+
+---
+
+## 10. Compose craft rules (feature:detail)
+
+Patterns established during Epic 4 implementation. Every rule has a rationale derived from a real bug or a code-review finding.
+
+### `painterResource()` rejects layer-list drawables — runtime crash
+`painterResource()` only accepts `VectorDrawable` and raster assets (PNG, JPG, WEBP). Passing a `layer-list` drawable throws `IllegalArgumentException` at runtime, not at compile time. For image placeholders, use `Modifier.background(color)` instead. Convert any `layer-list` to a true `VectorDrawable` if it must be loaded as a `Painter`.
+
+### Touch targets: 48dp clickable outer, 44dp visual inner
+Every icon-only button uses a two-box structure:
+```kotlin
+Box(
+    modifier = Modifier
+        .size(48.dp)                                    // touch target
+        .semantics { contentDescription = label }       // TalkBack label here
+        .clickable(onClick = onClick),
+) {
+    Box(
+        modifier = Modifier
+            .size(44.dp)                                // visual circle only
+            .shadow(2.dp, CircleShape)
+            .clip(CircleShape)
+            .background(color),
+    ) { content() }
+}
+```
+The `clickable` and `semantics` live on the **outer** box. Putting `clickable` on the inner 44dp box gives a sub-minimum touch area.
+
+### Icon-only button accessibility
+Apply `Modifier.semantics { this.contentDescription = label }` on the **clickable** element. Passing `contentDescription` to the child `Icon` alone does not expose it to the accessibility tree from the clickable scope.
+
+### `rememberSaveable` for persistent local UI state
+Use `rememberSaveable` for any user-triggered local Composable state (expanded/collapsed toggles, form input). `remember` loses state on rotation. Rule: if losing this state on a screen rotation would surprise the user, use `rememberSaveable`.
+
+### Minimum touch target on text buttons
+Add `.minimumInteractiveComponentSize()` **before** `.clickable` on any `Text` used as a button (e.g. "Leer más"). Without it, the tap area equals the text bounds — often only a few dp tall.
+
+### Informational chips: `SuggestionChip`, not `AssistChip(enabled = false)`
+`AssistChip(enabled = false)` renders at reduced opacity, implying the feature is unavailable. Use `SuggestionChip` for read-only informational labels — it is the correct Material 3 chip for non-interactive content. Its parameter is `icon`, not `leadingIcon`.
+
+### Auto-scroll with HorizontalPager: `settledPage`, not `currentPage`
+```kotlin
+// WRONG — cancels animateScrollToPage mid-animation
+LaunchedEffect(pagerState.currentPage) { ... }
+
+// CORRECT — fires only after the page is fully at rest
+LaunchedEffect(pagerState.settledPage) {
+    delay(5_000)
+    pagerState.animateScrollToPage((pagerState.settledPage + 1) % pageCount)
+}
+```
+`currentPage` changes at the 50% scroll midpoint, which cancels the coroutine launched by `LaunchedEffect` and leaves the pager visually stuck.
+
+### coreLibraryDesugaring for `java.time`
+Feature modules that use `java.time` types (`Instant`, `ZoneId`, `DateTimeFormatter`) must declare:
+```kotlin
+compileOptions { isCoreLibraryDesugaringEnabled = true }
+dependencies { coreLibraryDesugaring(libs.desugar.jdk.libs) }
+```
+Do **not** add `@RequiresApi(Build.VERSION_CODES.O)` — desugaring handles runtime availability on API 24+. Lint will false-positive if desugaring is missing and suppress the error if the annotation is present, masking the real fix.
+
+### `@Preview` on internal Composables
+Every non-trivial `internal` Composable must have at least one `@Preview`. Rules:
+- Preview functions are `private`.
+- Wrap content in `IdealistaTheme`.
+- Use `showBackground = true` and `widthDp = 360` for component-level previews.
+- Use `device = "spec:width=360dp,height=800dp,dpi=420"` for full-screen previews.
+
+### `IsFavoriteUseCase` returns `Flow<Favorite?>`, not `Flow<Boolean>`
+The use case was changed from `Flow<Boolean>` to `Flow<Favorite?>` so the detail screen can read `favoritedAt: Instant` to display the save date. Callers check `favorite != null` for the boolean, and `favorite?.favoritedAt` for the timestamp. Do not revert this.
+
+### System intents from Fragment, not from Composable
+`Intent.ACTION_SEND` and other system intents are launched from the `Fragment` (in a private function like `shareProperty(state: DetailUiState)`). The `onShareClick: () -> Unit` lambda is a trigger only — it contains no Intent logic. Never call `context.startActivity` directly from a Composable's `onClick` lambda.
 
 ---
 
