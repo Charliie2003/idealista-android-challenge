@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.detail
+package com.carloshinojosa.idealistachallenge.detail.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,9 +12,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
 import com.carloshinojosa.idealistachallenge.design.ui.theme.IdealistaTheme
-import com.carloshinojosa.idealistachallenge.detail.composables.DetailScreen
+import com.carloshinojosa.idealistachallenge.detail.R
 import com.carloshinojosa.idealistachallenge.detail.databinding.FragmentDetailBinding
-import com.carloshinojosa.idealistachallenge.detail.model.DetailUiState
+import com.carloshinojosa.idealistachallenge.detail.presentation.DetailUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

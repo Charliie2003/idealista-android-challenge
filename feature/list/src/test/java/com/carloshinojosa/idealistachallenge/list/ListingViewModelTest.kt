@@ -5,12 +5,13 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.carloshinojosa.idealistachallenge.core.domain.error.DomainError
-import com.carloshinojosa.idealistachallenge.core.domain.usecase.ObservePropertiesUseCase
+import com.carloshinojosa.idealistachallenge.core.domain.usecase.GetPropertyDetailUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ToggleFavoriteUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.util.Result
 import com.carloshinojosa.idealistachallenge.list.presentation.model.FilterType
-import com.carloshinojosa.idealistachallenge.list.presentation.model.ListingUiState
-import com.carloshinojosa.idealistachallenge.list.presentation.model.PropertyMapper
+import com.carloshinojosa.idealistachallenge.list.presentation.ListingUiState
+import com.carloshinojosa.idealistachallenge.list.presentation.ListingViewModel
+import com.carloshinojosa.idealistachallenge.list.presentation.mapper.PropertyMapper
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -31,7 +32,7 @@ class ListingViewModelTest {
     val instantTaskRule = InstantTaskExecutorRule()
 
     // MockK mocks classes (final Kotlin classes) using inline mocking.
-    private val observeProperties: ObservePropertiesUseCase = mockk()
+    private val observeProperties: GetPropertyDetailUseCase = mockk()
     private val toggleFavorite: ToggleFavoriteUseCase = mockk(relaxed = true)
 
     // Context with relaxed mock: getString returns "" for all calls; the mapper still produces
@@ -168,7 +169,7 @@ class ListingViewModelTest {
         val states = createViewModel().state.collectValues()
 
         val error = states.last() as ListingUiState.Error
-        val message = error.message as com.carloshinojosa.idealistachallenge.core.domain.util.UiText.StringResource
+        val message = error.message as com.carloshinojosa.idealistachallenge.design.ui.theme.UiText.StringResource
         assertEquals(R.string.listing_error_message, message.resId)
     }
 

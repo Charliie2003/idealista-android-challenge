@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.detail
+package com.carloshinojosa.idealistachallenge.detail.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -7,9 +7,9 @@ import com.carloshinojosa.idealistachallenge.core.domain.usecase.IsFavoriteUseCa
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ObservePropertyDetailUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ToggleFavoriteUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.util.Result
-import com.carloshinojosa.idealistachallenge.core.domain.util.UiText
-import com.carloshinojosa.idealistachallenge.detail.model.DetailMapper
-import com.carloshinojosa.idealistachallenge.detail.model.DetailUiState
+import com.carloshinojosa.idealistachallenge.design.ui.theme.UiText
+import com.carloshinojosa.idealistachallenge.detail.R
+import com.carloshinojosa.idealistachallenge.detail.presentation.mapper.DetailMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

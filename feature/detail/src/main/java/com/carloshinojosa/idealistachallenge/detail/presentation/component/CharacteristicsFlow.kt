@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.detail.composables
+package com.carloshinojosa.idealistachallenge.detail.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.carloshinojosa.idealistachallenge.design.ui.theme.IdealistaTheme
 import com.carloshinojosa.idealistachallenge.detail.R
-import com.carloshinojosa.idealistachallenge.detail.model.CharacteristicUiModel
+import com.carloshinojosa.idealistachallenge.detail.presentation.model.CharacteristicUiModel
 
 /**
  * Displays property characteristics as a [FlowRow] of non-interactive [SuggestionChip] items.

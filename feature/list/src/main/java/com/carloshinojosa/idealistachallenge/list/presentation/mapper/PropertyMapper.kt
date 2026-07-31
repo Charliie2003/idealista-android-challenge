@@ -1,10 +1,9 @@
-package com.carloshinojosa.idealistachallenge.list.presentation.model
+package com.carloshinojosa.idealistachallenge.list.presentation.mapper
 
 import android.content.Context
 import com.carloshinojosa.idealistachallenge.core.domain.model.Property
-import com.carloshinojosa.idealistachallenge.core.domain.model.Property.Companion.OPERATION_RENT
-import com.carloshinojosa.idealistachallenge.core.domain.model.Property.Companion.OPERATION_SALE
 import com.carloshinojosa.idealistachallenge.list.R
+import com.carloshinojosa.idealistachallenge.list.presentation.model.PropertyCardUiModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.text.NumberFormat
 import java.time.ZoneId
@@ -15,8 +14,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Maps a domain [Property] to [PropertyCardUiModel] for display in the listing screen.
- * String resources are resolved via [Context] to avoid hardcoding user-visible text.
+ * Maps a domain [com.carloshinojosa.idealistachallenge.core.domain.model.Property] to [com.carloshinojosa.idealistachallenge.list.presentation.model.PropertyCardUiModel] for display in the listing screen.
+ * String resources are resolved via [android.content.Context] to avoid hardcoding user-visible text.
  */
 @Singleton
 class PropertyMapper @Inject constructor(
@@ -29,8 +28,8 @@ class PropertyMapper @Inject constructor(
 
     fun map(property: Property): PropertyCardUiModel {
         val operationLabel = when (property.operation) {
-            OPERATION_SALE -> context.getString(R.string.listing_filter_sale)
-            OPERATION_RENT -> context.getString(R.string.listing_filter_rent)
+            Property.Companion.OPERATION_SALE -> context.getString(R.string.listing_filter_sale)
+            Property.Companion.OPERATION_RENT -> context.getString(R.string.listing_filter_rent)
             else           -> property.operation
         }
 

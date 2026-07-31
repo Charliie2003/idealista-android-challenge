@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 /** Combines the properties list with live favorite state into a single observable stream. */
-class ObservePropertiesUseCase @Inject constructor(
+class GetPropertyDetailUseCase @Inject constructor(
     private val propertiesRepository: PropertiesRepository,
     private val favoritesRepository: FavoritesRepository,
 ) {

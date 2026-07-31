@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.detail.composables
+package com.carloshinojosa.idealistachallenge.detail.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
-import com.carloshinojosa.idealistachallenge.core.domain.util.UiText
+import com.carloshinojosa.idealistachallenge.design.ui.theme.UiText
 import com.carloshinojosa.idealistachallenge.design.ui.theme.Canvas
 import com.carloshinojosa.idealistachallenge.design.ui.theme.FavBg
 import com.carloshinojosa.idealistachallenge.design.ui.theme.Favorite
@@ -37,11 +37,19 @@ import com.carloshinojosa.idealistachallenge.design.ui.theme.IdealistaTheme
 import com.carloshinojosa.idealistachallenge.design.ui.theme.OnSurface
 import com.carloshinojosa.idealistachallenge.design.ui.theme.Surface
 import com.carloshinojosa.idealistachallenge.detail.R
-import com.carloshinojosa.idealistachallenge.detail.model.CharacteristicUiModel
-import com.carloshinojosa.idealistachallenge.detail.model.DetailUiState
-import com.carloshinojosa.idealistachallenge.detail.model.EnergyUiModel
-import com.carloshinojosa.idealistachallenge.detail.model.ImageUiModel
-import com.carloshinojosa.idealistachallenge.detail.model.PropertyDetailUiModel
+import com.carloshinojosa.idealistachallenge.detail.presentation.component.CharacteristicsFlow
+import com.carloshinojosa.idealistachallenge.detail.presentation.component.CommunityCostsCard
+import com.carloshinojosa.idealistachallenge.detail.presentation.component.DescriptionBlock
+import com.carloshinojosa.idealistachallenge.detail.presentation.component.EnergyCertificationCard
+import com.carloshinojosa.idealistachallenge.detail.presentation.component.ErrorState
+import com.carloshinojosa.idealistachallenge.detail.presentation.component.HighlightsRow
+import com.carloshinojosa.idealistachallenge.detail.presentation.component.LoadingState
+import com.carloshinojosa.idealistachallenge.detail.presentation.component.PropertyGallery
+import com.carloshinojosa.idealistachallenge.detail.presentation.component.PropertyHeader
+import com.carloshinojosa.idealistachallenge.detail.presentation.model.CharacteristicUiModel
+import com.carloshinojosa.idealistachallenge.detail.presentation.model.EnergyUiModel
+import com.carloshinojosa.idealistachallenge.detail.presentation.model.ImageUiModel
+import com.carloshinojosa.idealistachallenge.detail.presentation.model.PropertyDetailUiModel
 
 @Composable
 internal fun DetailScreen(

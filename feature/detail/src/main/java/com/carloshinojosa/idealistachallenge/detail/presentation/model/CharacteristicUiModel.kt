@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.detail.model
+package com.carloshinojosa.idealistachallenge.detail.presentation.model
 
 import androidx.annotation.DrawableRes
 

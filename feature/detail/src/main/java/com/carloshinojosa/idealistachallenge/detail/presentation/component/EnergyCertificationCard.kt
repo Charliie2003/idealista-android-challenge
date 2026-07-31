@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.detail.composables
+package com.carloshinojosa.idealistachallenge.detail.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +35,7 @@ import com.carloshinojosa.idealistachallenge.design.ui.theme.IdealistaTheme
 import com.carloshinojosa.idealistachallenge.design.ui.theme.OnSurface
 import com.carloshinojosa.idealistachallenge.design.ui.theme.OnSurfaceVariant
 import com.carloshinojosa.idealistachallenge.detail.R
-import com.carloshinojosa.idealistachallenge.detail.model.EnergyUiModel
+import com.carloshinojosa.idealistachallenge.detail.presentation.model.EnergyUiModel
 
 private val energyColors = listOf(EnergyA, EnergyB, EnergyC, EnergyD, EnergyE, EnergyF, EnergyG)
 

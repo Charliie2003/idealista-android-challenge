@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.list
+package com.carloshinojosa.idealistachallenge.list.presentation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -10,14 +10,14 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.carloshinojosa.idealistachallenge.core.domain.model.Property.Companion.OPERATION_RENT
 import com.carloshinojosa.idealistachallenge.core.domain.model.Property.Companion.OPERATION_SALE
-import com.carloshinojosa.idealistachallenge.core.domain.usecase.ObservePropertiesUseCase
+import com.carloshinojosa.idealistachallenge.core.domain.usecase.GetPropertyDetailUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ToggleFavoriteUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.util.Result
-import com.carloshinojosa.idealistachallenge.core.domain.util.UiText
+import com.carloshinojosa.idealistachallenge.design.ui.theme.UiText
+import com.carloshinojosa.idealistachallenge.list.R
 import com.carloshinojosa.idealistachallenge.list.presentation.model.FilterType
-import com.carloshinojosa.idealistachallenge.list.presentation.model.ListingUiState
 import com.carloshinojosa.idealistachallenge.list.presentation.model.PropertyCardUiModel
-import com.carloshinojosa.idealistachallenge.list.presentation.model.PropertyMapper
+import com.carloshinojosa.idealistachallenge.list.presentation.mapper.PropertyMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +40,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ListingViewModel @RequiresApi(Build.VERSION_CODES.O)
 @Inject constructor(
-    private val observeProperties: ObservePropertiesUseCase,
+    private val observeProperties: GetPropertyDetailUseCase,
     private val toggleFavorite: ToggleFavoriteUseCase,
     private val mapper: PropertyMapper,
 ) : ViewModel() {
@@ -52,7 +52,7 @@ class ListingViewModel @RequiresApi(Build.VERSION_CODES.O)
 
     /**
      * Shared mapped flow. Uses an explicit [when] expression instead of Result.map to avoid
-     * a name collision between [kotlinx.coroutines.flow.map] and the Result extension.
+     * a name collision between [map] and the Result extension.
      * Shared so that [state] and [favoritesCount] collect a single upstream subscription.
      * Re-fetches from scratch whenever [_retryTrigger] increments.
      */

@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.detail.composables
+package com.carloshinojosa.idealistachallenge.detail.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.detail.model
+package com.carloshinojosa.idealistachallenge.detail.presentation.model
 
 data class PropertyDetailUiModel(
     val id: String,

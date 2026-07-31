@@ -7,8 +7,9 @@ import com.carloshinojosa.idealistachallenge.core.domain.usecase.IsFavoriteUseCa
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ObservePropertyDetailUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ToggleFavoriteUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.util.Result
-import com.carloshinojosa.idealistachallenge.detail.model.DetailMapper
-import com.carloshinojosa.idealistachallenge.detail.model.DetailUiState
+import com.carloshinojosa.idealistachallenge.detail.presentation.mapper.DetailMapper
+import com.carloshinojosa.idealistachallenge.detail.presentation.DetailUiState
+import com.carloshinojosa.idealistachallenge.detail.presentation.DetailViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -26,7 +27,7 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Unit tests for [DetailViewModel].
+ * Unit tests for [com.carloshinojosa.idealistachallenge.detail.presentation.DetailViewModel].
  *
  * The ViewModel uses `stateIn(WhileSubscribed)` with [DetailUiState.Loading] as the initial
  * value. With [UnconfinedTestDispatcher] installed as Dispatchers.Main, the `flatMapLatest`

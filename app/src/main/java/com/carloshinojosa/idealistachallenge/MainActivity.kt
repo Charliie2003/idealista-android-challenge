@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.NavHostFragment
 import com.carloshinojosa.idealistachallenge.databinding.ActivityMainBinding
-import com.carloshinojosa.idealistachallenge.list.ListingNavigator
+import com.carloshinojosa.idealistachallenge.list.presentation.ListingNavigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,6 +1,7 @@
-package com.carloshinojosa.idealistachallenge.detail.model
+package com.carloshinojosa.idealistachallenge.detail.presentation
 
-import com.carloshinojosa.idealistachallenge.core.domain.util.UiText
+import com.carloshinojosa.idealistachallenge.design.ui.theme.UiText
+import com.carloshinojosa.idealistachallenge.detail.presentation.model.PropertyDetailUiModel
 
 sealed interface DetailUiState {
     data object Loading : DetailUiState

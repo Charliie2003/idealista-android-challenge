@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.detail.composables
+package com.carloshinojosa.idealistachallenge.detail.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,10 +30,9 @@ import com.carloshinojosa.idealistachallenge.design.ui.theme.OnSurfaceVariant
 import com.carloshinojosa.idealistachallenge.design.ui.theme.PriceXL
 import com.carloshinojosa.idealistachallenge.design.ui.theme.Title
 import com.carloshinojosa.idealistachallenge.detail.R
-import com.carloshinojosa.idealistachallenge.detail.model.CharacteristicUiModel
-import com.carloshinojosa.idealistachallenge.detail.model.EnergyUiModel
-import com.carloshinojosa.idealistachallenge.detail.model.ImageUiModel
-import com.carloshinojosa.idealistachallenge.detail.model.PropertyDetailUiModel
+import com.carloshinojosa.idealistachallenge.detail.presentation.model.EnergyUiModel
+import com.carloshinojosa.idealistachallenge.detail.presentation.model.ImageUiModel
+import com.carloshinojosa.idealistachallenge.detail.presentation.model.PropertyDetailUiModel
 
 @Composable
 internal fun PropertyHeader(
@@ -151,8 +151,8 @@ private fun TagChipsRow(
 @Composable
 private fun SurfaceChip(
     text: String,
-    backgroundColor: androidx.compose.ui.graphics.Color,
-    textColor: androidx.compose.ui.graphics.Color,
+    backgroundColor: Color,
+    textColor: Color,
     modifier: Modifier = Modifier,
 ) {
     Text(

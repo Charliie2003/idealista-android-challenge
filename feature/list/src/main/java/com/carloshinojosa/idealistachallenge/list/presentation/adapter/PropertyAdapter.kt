@@ -1,16 +1,15 @@
-package com.carloshinojosa.idealistachallenge.list.recyclerView
+package com.carloshinojosa.idealistachallenge.list.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import com.carloshinojosa.idealistachallenge.list.databinding.ItemPropertyBinding
 import com.carloshinojosa.idealistachallenge.list.presentation.model.PropertyCardUiModel
 
 internal class PropertyAdapter(
     private val onItemClick: (propertyId: String) -> Unit,
     private val onFavoriteClick: (propertyId: String) -> Unit,
-) : ListAdapter<PropertyCardUiModel, PropertyViewHolder>(DiffCallback) {
+) : androidx.recyclerview.widget.ListAdapter<PropertyCardUiModel, PropertyViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PropertyViewHolder {
         val binding = ItemPropertyBinding.inflate(

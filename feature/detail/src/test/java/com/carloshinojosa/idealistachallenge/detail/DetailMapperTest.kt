@@ -1,8 +1,7 @@
 package com.carloshinojosa.idealistachallenge.detail
 
 import android.content.Context
-import com.carloshinojosa.idealistachallenge.detail.R
-import com.carloshinojosa.idealistachallenge.detail.model.DetailMapper
+import com.carloshinojosa.idealistachallenge.detail.presentation.mapper.DetailMapper
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot

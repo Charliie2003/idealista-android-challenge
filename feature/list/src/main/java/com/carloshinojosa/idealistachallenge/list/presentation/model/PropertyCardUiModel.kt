@@ -2,7 +2,7 @@ package com.carloshinojosa.idealistachallenge.list.presentation.model
 
 /**
  * UI model for a single property card in the listing screen.
- * Produced by [PropertyMapper]; never mutated by the UI.
+ * Produced by [com.carloshinojosa.idealistachallenge.list.presentation.mapper.PropertyMapper]; never mutated by the UI.
  */
 data class PropertyCardUiModel(
     val id: String,
