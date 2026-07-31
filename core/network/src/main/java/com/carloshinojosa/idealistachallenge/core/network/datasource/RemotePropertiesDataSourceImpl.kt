@@ -10,6 +10,7 @@ import com.carloshinojosa.idealistachallenge.core.network.mapper.toDomain
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 class RemotePropertiesDataSourceImpl @Inject constructor(
     private val api: IdealistaApi,
@@ -19,12 +20,15 @@ class RemotePropertiesDataSourceImpl @Inject constructor(
         api.getProperties().map { it.toDomain() }
     }
 
-    override suspend fun fetchPropertyDetailEnrichment(): Result<PropertyDetailEnrichment> = safeApiCall {
-        api.getDetail().toDomain()
-    }
+    override suspend fun fetchPropertyDetailEnrichment(): Result<PropertyDetailEnrichment> =
+        safeApiCall {
+            api.getDetail().toDomain()
+        }
 
     private inline fun <T> safeApiCall(block: () -> T): Result<T> = try {
         Result.Success(block())
+    } catch (error: CancellationException) {
+        throw error
     } catch (e: HttpException) {
         Result.Error(DomainError.Http(e.code()))
     } catch (e: IOException) {

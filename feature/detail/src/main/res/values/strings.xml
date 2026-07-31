@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="detail_screen_title">Detail</string>
+    <string name="detail_screen_title">Detalle</string>
+    <string name="detail_op_sale">Venta</string>
+    <string name="detail_op_rent">Alquiler</string>
+    <string name="detail_status_renew">A reformar</string>
+    <string name="detail_status_good">Buen estado</string>
+    <string name="detail_status_new">A estrenar</string>
+    <string name="detail_highlight_size">Construidos</string>
+    <string name="detail_highlight_rooms">Habitaciones</string>
+    <string name="detail_highlight_baths">Baños</string>
+    <string name="detail_highlight_floor">Planta</string>
+    <string name="detail_section_description">Descripción</string>
+    <string name="detail_section_characteristics">Características</string>
+    <string name="detail_read_more">Leer más</string>
+    <string name="detail_read_less">Leer menos</string>
+    <string name="detail_energy_title">Certificado energético</string>
+    <string name="detail_energy_class">Clase %s</string>
+    <string name="detail_community_costs_title">Gastos de comunidad</string>
+    <string name="detail_community_costs_value">%s €/mes</string>
+    <string name="detail_saved_on">Guardado el %s</string>
+    <string name="detail_error_generic">No se ha podido cargar el detalle</string>
+    <string name="detail_retry">Reintentar</string>
+    <string name="cd_back">Volver</string>
+    <string name="cd_share">Compartir</string>
+    <string name="cd_save_property">Guardar en favoritos</string>
+    <string name="cd_property_saved">Guardado en favoritos. Toca para quitar</string>
+    <string name="cd_gallery_image">Imagen %1$d de %2$d</string>
+    <string name="detail_char_surface">Superficie</string>
+    <string name="detail_char_rooms">Habitaciones</string>
+    <string name="detail_char_baths">Baños</string>
+    <string name="detail_char_floor">Planta</string>
+    <string name="detail_char_elevator">Ascensor</string>
+    <string name="detail_char_boxroom">Trastero</string>
+    <string name="detail_yes">Sí</string>
+    <string name="detail_no">No</string>
 </resources>

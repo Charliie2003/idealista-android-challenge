@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Colors consumed by this module's drawables.
+  Values are identical to those in :app/res/values/colors.xml; the app module wins at merge time.
+-->
+<resources>
+    <color name="surface_variant">#EBEFED</color>
+    <color name="outline">#E1E6E3</color>
+    <color name="on_surface_variant">#5C6360</color>
+    <color name="favorite">#E5484D</color>
+</resources>

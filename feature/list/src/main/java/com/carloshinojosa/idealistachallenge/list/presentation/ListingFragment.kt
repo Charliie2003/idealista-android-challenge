@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.list
+package com.carloshinojosa.idealistachallenge.list.presentation
 
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -15,11 +15,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.carloshinojosa.idealistachallenge.core.domain.util.UiText
+import com.carloshinojosa.idealistachallenge.design.ui.theme.UiText
+import com.carloshinojosa.idealistachallenge.list.R
 import com.carloshinojosa.idealistachallenge.list.databinding.FragmentListingBinding
 import com.carloshinojosa.idealistachallenge.list.presentation.model.FilterType
-import com.carloshinojosa.idealistachallenge.list.presentation.model.ListingUiState
-import com.carloshinojosa.idealistachallenge.list.recyclerView.PropertyAdapter
+import com.carloshinojosa.idealistachallenge.list.presentation.adapter.PropertyAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

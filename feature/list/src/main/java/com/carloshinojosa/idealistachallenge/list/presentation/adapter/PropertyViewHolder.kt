@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.list.recyclerView
+package com.carloshinojosa.idealistachallenge.list.presentation.adapter
 
 import android.graphics.Typeface
 import android.text.SpannableStringBuilder

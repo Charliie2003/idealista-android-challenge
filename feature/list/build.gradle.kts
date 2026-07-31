@@ -28,6 +28,7 @@ android {
 
 dependencies {
     implementation(project(":core:domain"))
+    implementation(project(":core:design"))
     implementation(libs.material)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)

@@ -3,6 +3,7 @@ package com.carloshinojosa.idealistachallenge.list.presentation.model
 import android.content.Context
 import com.carloshinojosa.idealistachallenge.list.PropertyFixtures
 import com.carloshinojosa.idealistachallenge.list.R
+import com.carloshinojosa.idealistachallenge.list.presentation.mapper.PropertyMapper
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot

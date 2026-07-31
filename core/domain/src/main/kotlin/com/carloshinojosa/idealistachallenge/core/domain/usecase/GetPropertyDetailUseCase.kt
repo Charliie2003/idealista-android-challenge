@@ -11,7 +11,7 @@ import javax.inject.Inject
  * observes [IsFavoriteUseCase] separately for live favorite state.
  * See ADR-0002 for static-endpoint handling.
  */
-class ObservePropertyDetailUseCase @Inject constructor(
+class GetPropertyDetailUseCase @Inject constructor(
     private val propertiesRepository: PropertiesRepository,
 ) {
     suspend operator fun invoke(propertyId: String): Result<PropertyDetail> =

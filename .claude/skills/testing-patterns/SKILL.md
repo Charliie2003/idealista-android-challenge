@@ -168,6 +168,62 @@ class ListingViewModelTest {
 }
 ```
 
+## Turbine + `stateIn(WhileSubscribed)` gotcha
+
+With `UnconfinedTestDispatcher`, coroutines run eagerly on the same thread. If the upstream flow produces values synchronously (e.g. `flowOf(value)` or a `coEvery { } returns flowOf(...)`), then by the time Turbine's `test { }` block subscribes:
+
+1. `stateIn` starts collecting.
+2. `onStart { emit(Loading) }` fires → Loading enters the `StateFlow`.
+3. Upstream emits Content immediately (synchronously) → replaces Loading in the `StateFlow`.
+
+Because `StateFlow` only replays the **current** value (buffer=1), the subscriber only sees Content — the Loading state was already overwritten.
+
+**Rule: never use `skipItems(1)` to skip a Loading item in a ViewModel test where the use case is a `flowOf(...)` mock.** Receive the first item directly:
+
+```kotlin
+@Test
+fun `emits Content when detail is available`() = runTest {
+    coEvery { observeDetail("1") } returns flowOf(DetailFixtures.propertyDetail())
+    coEvery { isFavorite("1") } returns flowOf(null)
+
+    viewModel().state.test {
+        // No skipItems — Loading was already overwritten before Turbine subscribes
+        val content = awaitItem() as DetailUiState.Content
+        assertThat(content.isFavorite).isFalse()
+        cancelAndIgnoreRemainingEvents()
+    }
+}
+```
+
+**When Loading IS visible:** This happens when the use case is backed by a `MutableSharedFlow` that hasn't emitted yet (see `ListingViewModelTest`). The `onStart { emit(Loading) }` fires and stays in the `StateFlow` until the test explicitly calls `emit(...)` on the fake. In that case, `awaitItem()` → Loading, then `awaitItem()` → Content is correct.
+
+```
+Upstream is MutableSharedFlow (nothing yet):  Loading → Content  → skipItems(1) IS needed
+Upstream is flowOf(value) (immediate):        Content only       → skipItems(1) MUST NOT be used
+```
+
+## MockK: `coEvery` vs `every`
+
+- **`coEvery { suspendFun(...) } returns value`** — for suspend functions (repository methods, use cases returning a single value).
+- **`every { flowFun(...) } returns flowOf(value)`** — for functions returning `Flow<T>` (they are NOT suspend functions, even if their body collects another flow).
+
+```kotlin
+// Correct:
+coEvery { observeDetail("1") } returns flowOf(detail)   // returns Flow, NOT suspend — use every
+every { isFavorite("1") } returns flowOf(favorite)       // same
+
+coEvery { toggleFavorite("1") } just Runs               // suspend function — use coEvery
+```
+
+Wait — `observeDetail` and `isFavorite` return `Flow<T>`, so:
+```kotlin
+every { observeDetail("1") } returns flowOf(detail)     // correct (not suspend)
+every { isFavorite("1") } returns flowOf(null)           // correct (not suspend)
+coEvery { toggleFavorite("1") } just Runs               // correct (suspend)
+```
+
+If you use `coEvery` on a non-suspend function, MockK will compile but it inserts an unnecessary coroutine wrapper. Use `every` for Flow-returning functions.
+
 ## Room DAO test (in-memory)
 
 ```kotlin

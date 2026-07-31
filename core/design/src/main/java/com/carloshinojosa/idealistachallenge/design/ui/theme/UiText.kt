@@ -1,4 +1,4 @@
-package com.carloshinojosa.idealistachallenge.core.domain.util
+package com.carloshinojosa.idealistachallenge.design.ui.theme
 
 /**
  * Represents text that can originate from a dynamic string or a string resource ID.

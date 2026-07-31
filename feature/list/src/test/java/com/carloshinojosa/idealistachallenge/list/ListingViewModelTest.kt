@@ -9,8 +9,9 @@ import com.carloshinojosa.idealistachallenge.core.domain.usecase.ObserveProperti
 import com.carloshinojosa.idealistachallenge.core.domain.usecase.ToggleFavoriteUseCase
 import com.carloshinojosa.idealistachallenge.core.domain.util.Result
 import com.carloshinojosa.idealistachallenge.list.presentation.model.FilterType
-import com.carloshinojosa.idealistachallenge.list.presentation.model.ListingUiState
-import com.carloshinojosa.idealistachallenge.list.presentation.model.PropertyMapper
+import com.carloshinojosa.idealistachallenge.list.presentation.ListingUiState
+import com.carloshinojosa.idealistachallenge.list.presentation.ListingViewModel
+import com.carloshinojosa.idealistachallenge.list.presentation.mapper.PropertyMapper
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -168,7 +169,7 @@ class ListingViewModelTest {
         val states = createViewModel().state.collectValues()
 
         val error = states.last() as ListingUiState.Error
-        val message = error.message as com.carloshinojosa.idealistachallenge.core.domain.util.UiText.StringResource
+        val message = error.message as com.carloshinojosa.idealistachallenge.design.ui.theme.UiText.StringResource
         assertEquals(R.string.listing_error_message, message.resId)
     }
 
