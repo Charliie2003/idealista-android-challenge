@@ -35,6 +35,29 @@ import com.carloshinojosa.idealistachallenge.design.ui.theme.SurfaceVariant
 import com.carloshinojosa.idealistachallenge.detail.R
 import com.carloshinojosa.idealistachallenge.detail.presentation.model.ImageUiModel
 
+/** Auto-scroll interval for the image gallery in milliseconds. */
+private const val GALLERY_AUTO_SCROLL_DELAY_MS = 5_000L
+
+/** Width-to-height ratio for the gallery box (4:3). */
+private const val GALLERY_ASPECT_RATIO_W = 4f
+private const val GALLERY_ASPECT_RATIO_H = 3f
+
+/** Scrim gradient stop positions — where the dark-to-transparent fade transitions. */
+private const val SCRIM_TOP_FADE_END = 0.34f
+private const val SCRIM_BOTTOM_FADE_START = 0.72f
+
+/** Hex color for the RoomTag semi-transparent background. */
+private const val ROOM_TAG_BG_COLOR = 0x9E14201A
+
+/** Maximum number of visible pager dots before truncation. */
+private const val PAGER_DOT_MAX_COUNT = 10
+
+/** Alpha for pager dots that are not the current page. */
+private const val PAGER_DOT_INACTIVE_ALPHA = 0.75f
+
+/** Fully-circular corner radius percentage for pill-shaped elements (dots, chips). */
+private const val PILL_CORNER_PERCENT = 50
+
 @Composable
 internal fun PropertyGallery(
     images: List<ImageUiModel>,
@@ -50,7 +73,7 @@ internal fun PropertyGallery(
 
     if (pageCount > 1) {
         LaunchedEffect(pagerState.settledPage) {
-            delay(5_000)
+            delay(GALLERY_AUTO_SCROLL_DELAY_MS)
             val next = (pagerState.settledPage + 1) % pageCount
             pagerState.animateScrollToPage(next)
         }
@@ -59,7 +82,7 @@ internal fun PropertyGallery(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(20f / 15f),
+            .aspectRatio(GALLERY_ASPECT_RATIO_W / GALLERY_ASPECT_RATIO_H),
     ) {
         HorizontalPager(
             state = pagerState,
@@ -120,8 +143,8 @@ private fun GalleryScrim(modifier: Modifier = Modifier) {
             Brush.verticalGradient(
                 colorStops = arrayOf(
                     0.00f to Color.Black.copy(alpha = 0.40f),
-                    0.34f to Color.Transparent,
-                    0.72f to Color.Transparent,
+                    SCRIM_TOP_FADE_END to Color.Transparent,
+                    SCRIM_BOTTOM_FADE_START to Color.Transparent,
                     1.00f to Color.Black.copy(alpha = 0.50f),
                 ),
             ),
@@ -134,7 +157,7 @@ private fun RoomTag(text: String, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(6.dp))
-            .background(Color(0x9E14201A))
+            .background(Color(ROOM_TAG_BG_COLOR))
             .padding(horizontal = 10.dp, vertical = 4.dp),
     ) {
         Text(
@@ -157,7 +180,7 @@ private fun PagerDots(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        repeat(pageCount.coerceAtMost(10)) { index ->
+        repeat(pageCount.coerceAtMost(PAGER_DOT_MAX_COUNT)) { index ->
             val isActive = index == currentPage
             val dotWidth by animateDpAsState(
                 targetValue = if (isActive) 16.dp else 5.dp,
@@ -167,8 +190,8 @@ private fun PagerDots(
                 modifier = Modifier
                     .width(dotWidth)
                     .height(5.dp)
-                    .clip(RoundedCornerShape(50))
-                    .background(Color.White.copy(alpha = if (isActive) 1f else 0.75f)),
+                    .clip(RoundedCornerShape(PILL_CORNER_PERCENT))
+                    .background(Color.White.copy(alpha = if (isActive) 1f else PAGER_DOT_INACTIVE_ALPHA)),
             )
         }
     }

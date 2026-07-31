@@ -102,7 +102,7 @@ class ListingFragment : Fragment() {
     private fun setupSegmentedControl() {
         binding.segmentedContainer.doOnLayout { container ->
             val innerWidth = container.width - container.paddingStart - container.paddingEnd
-            tabWidth = innerWidth / 3f
+            tabWidth = innerWidth / TAB_COUNT
             binding.segmentIndicator.updateLayoutParams { width = tabWidth.toInt() }
             val currentIndex = (viewModel.filter.value ?: FilterType.SALE).ordinal
             val rtlSign = if (container.layoutDirection == View.LAYOUT_DIRECTION_RTL) -1f else 1f
@@ -112,7 +112,6 @@ class ListingFragment : Fragment() {
         binding.tabRent.setOnClickListener { viewModel.onFilterChanged(FilterType.RENT) }
         binding.tabFavorites.setOnClickListener { viewModel.onFilterChanged(FilterType.FAVORITES) }
     }
-
 
     private fun renderState(state: ListingUiState) {
         when (state) {
@@ -177,8 +176,8 @@ class ListingFragment : Fragment() {
             return
         }
         ObjectAnimator.ofFloat(binding.segmentIndicator, "translationX", targetX).apply {
-            duration = 280L
-            interpolator = PathInterpolator(0.34f, 1.2f, 0.4f, 1.0f)
+            duration = ANIM_DURATION_MS
+            interpolator = PathInterpolator(INTERP_X1, INTERP_Y1, INTERP_X2, INTERP_Y2)
             start()
         }
     }
@@ -199,16 +198,16 @@ class ListingFragment : Fragment() {
         binding.segmentedContainer.visibility = View.VISIBLE
         binding.segmentedContainer.animate()
             .alpha(1f)
-            .setDuration(280L)
-            .setInterpolator(PathInterpolator(0.34f, 1.2f, 0.4f, 1.0f))
+            .setDuration(ANIM_DURATION_MS)
+            .setInterpolator(PathInterpolator(INTERP_X1, INTERP_Y1, INTERP_X2, INTERP_Y2))
             .start()
     }
 
     private fun hideSegmentedControl() {
         binding.segmentedContainer.animate()
             .alpha(0f)
-            .setDuration(280L)
-            .setInterpolator(PathInterpolator(0.34f, 1.2f, 0.4f, 1.0f))
+            .setDuration(ANIM_DURATION_MS)
+            .setInterpolator(PathInterpolator(INTERP_X1, INTERP_Y1, INTERP_X2, INTERP_Y2))
             .withEndAction {
                 binding.segmentedContainer.visibility = View.GONE
                 binding.segmentedContainer.alpha = 1f
@@ -217,10 +216,12 @@ class ListingFragment : Fragment() {
     }
 
     private fun updateChipLabel(filter: FilterType) {
-        binding.filterChip.text = getString(
-            if (filter == FilterType.ALL) R.string.listing_chip_filter
-            else R.string.listing_chip_see_all,
-        )
+        val resId = if (filter == FilterType.ALL) {
+            R.string.listing_chip_filter
+        } else {
+            R.string.listing_chip_see_all
+        }
+        binding.filterChip.text = getString(resId)
     }
 
     private fun syncInitialVisibility() {
@@ -269,5 +270,19 @@ class ListingFragment : Fragment() {
                 outRect.top = space
             }
         }
+    }
+
+    private companion object {
+        /** Segmented control has exactly three tabs: SALE / RENT / FAVORITES. */
+        const val TAB_COUNT = 3f
+
+        /** Duration for indicator slide and container fade animations. */
+        const val ANIM_DURATION_MS = 280L
+
+        /** PathInterpolator control points for a spring-like ease curve. */
+        const val INTERP_X1 = 0.34f
+        const val INTERP_Y1 = 1.2f
+        const val INTERP_X2 = 0.4f
+        const val INTERP_Y2 = 1.0f
     }
 }

@@ -21,7 +21,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.carloshinojosa.idealistachallenge.HiltTestRunner"
     }
 
     buildTypes {
@@ -81,6 +81,12 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    // core:network is a transitive impl dep — expose it to androidTest compile classpath
+    // so TestNetworkModule can reference NetworkModule::class in @TestInstallIn(replaces = …).
+    androidTestImplementation(project(":core:network"))
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.espresso.contrib)
+    kspAndroidTest(libs.hilt.compiler)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

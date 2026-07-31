@@ -28,6 +28,9 @@ import com.carloshinojosa.idealistachallenge.design.ui.theme.IdealistaTheme
 import com.carloshinojosa.idealistachallenge.design.ui.theme.OnSurface
 import com.carloshinojosa.idealistachallenge.detail.R
 
+/** Near-opaque white background for circular icon buttons over the gallery. */
+private const val ICON_BUTTON_BG_COLOR = 0xF0FFFFFF
+
 @Composable
 internal fun GalleryTopBar(
     isFavorite: Boolean,
@@ -135,7 +138,7 @@ private fun GalleryButton(
                 .size(44.dp)
                 .shadow(elevation = 2.dp, shape = CircleShape)
                 .clip(CircleShape)
-                .background(Color(0xF0FFFFFF)),
+                .background(Color(ICON_BUTTON_BG_COLOR)),
             contentAlignment = Alignment.Center,
         ) {
             content()

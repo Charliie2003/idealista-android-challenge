@@ -10,11 +10,13 @@ import com.carloshinojosa.idealistachallenge.core.domain.util.Result
 import com.carloshinojosa.idealistachallenge.detail.presentation.mapper.DetailMapper
 import com.carloshinojosa.idealistachallenge.detail.presentation.DetailUiState
 import com.carloshinojosa.idealistachallenge.detail.presentation.DetailViewModel
+import com.carloshinojosa.idealistachallenge.core.testing.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -172,5 +174,56 @@ class DetailViewModelTest {
 
         // then
         coVerify { toggleFavorite("p-001") }
+    }
+
+    // ── SavedStateHandle wiring ───────────────────────────────────────────────
+
+    @Test
+    fun `missing propertyId in SavedStateHandle throws IllegalStateException`() {
+        try {
+            DetailViewModel(
+                savedStateHandle = SavedStateHandle(emptyMap()),
+                getDetail = getDetail,
+                isFavorite = isFavorite,
+                toggleFavorite = toggleFavorite,
+                mapper = mapper,
+            )
+            org.junit.Assert.fail("Expected IllegalStateException")
+        } catch (e: IllegalStateException) {
+            // expected — checkNotNull fires when KEY_PROPERTY_ID is absent
+            assertNotNull(e.message)
+        }
+    }
+
+    // ── combine reuse ─────────────────────────────────────────────────────────
+
+    @Test
+    fun `favorite state updates without re-fetching property detail`() = runTest {
+        // given – isFavorite will emit two values (not-favorited, then favorited)
+        val favFlow = MutableStateFlow<com.carloshinojosa.idealistachallenge.core.domain.model.Favorite?>(null)
+        coEvery { getDetail("p-001") } returns Result.Success(DetailFixtures.propertyDetail())
+        every { isFavorite("p-001") } returns favFlow
+
+        val vm = createViewModel()
+
+        vm.state.test {
+            // first emission: not favorited
+            val first = awaitItem() as DetailUiState.Content
+            assertFalse(first.isFavorite)
+
+            // push a favorite — isFavorite emits again
+            val fav = DetailFixtures.favorite()
+            every { mapper.formatFavoriteDate(fav.favoritedAt) } returns "Guardado el 31 de julio de 2026"
+            favFlow.value = fav
+
+            // second emission: favorited
+            val second = awaitItem() as DetailUiState.Content
+            assertTrue(second.isFavorite)
+
+            // getDetail should have been called exactly once (combine reuses same result)
+            coVerify(exactly = 1) { getDetail("p-001") }
+
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 }

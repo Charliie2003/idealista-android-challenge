@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Maps a domain [com.carloshinojosa.idealistachallenge.core.domain.model.Property] to [com.carloshinojosa.idealistachallenge.list.presentation.model.PropertyCardUiModel] for display in the listing screen.
+ * Maps a domain [Property] to [PropertyCardUiModel] for display in the listing screen.
  * String resources are resolved via [android.content.Context] to avoid hardcoding user-visible text.
  */
 @Singleton
